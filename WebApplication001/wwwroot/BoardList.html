@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>게시판</title>
+    <base href="/" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    function loginBtn()
+    {
+        alert("로그인 시작");
+        var userId = document.getElementById("userId").value;
+        var userPwd = document.getElementById("userPwd").value;
+        alert(userId);
+        alert(userPwd);
+
+
+        if (userId == "" || userPwd == "" || userId.substr(0, 1) == " " || userPwd.substr(0, 1) == " ")
+        {
+            alert("ID 혹은 PWD를 입력해주세요");
+            return;
+        }
+
+        var x = document.getElementById("loginForm");
+        x.submit();
+        
+
+    }
+</script>
+</head>
+
+<body>
+
+    <div class="toast-header">
+        <h1>로그인</h1>
+    </div>
+
+    <div class="toast-body">
+
+        <table class="table-bordered">
+            <tr>
+                <th>
+                    번호
+                </th>
+                <th>
+                    제목
+                </th>
+                <th>
+                    작성자
+                </th>
+                <th>
+                    조회수
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    1
+                </td>
+                <td>
+                    경기침체에 따른...
+                </td>
+                <td>
+                    박대기
+                </td>
+                <td>
+                    0
+                </td>
+            </tr>
+        </table>
+     </div>
+
+
+</body>
+
+</html>

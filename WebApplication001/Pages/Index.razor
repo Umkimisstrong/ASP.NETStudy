@@ -1,0 +1,36 @@
+﻿@page "/"
+
+<div class="toast-header">
+    <h1>로그인</h1>
+</div>
+
+<div class="toast-body">
+    
+    <form action="~/BoardList.html" method="post" id="loginForm" name="loginForm">
+        <table class="table-bordered">
+            <tr>
+                <th>
+                    ID
+                </th>
+                <td>
+                    <input type="text" style="text-align: left; vertical-align: middle; width: 250px;" id="userId" name="userId" />
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    PWD
+                </th>
+                <td>
+                    <input type="text" style="text-align:left; vertical-align:middle; width: 250px;" id="userPwd" name="userPwd" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: center;">
+                    <button type="button" onclick="loginBtn()" class="btn btn-primary" style="width: 200px;">LOGIN</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+

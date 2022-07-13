@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>게시판-로그인</title>
+    <base href="/" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    function loginBtn()
+    {
+        alert("로그인 시작");
+        var userId = document.getElementById("userId").value;
+        var userPwd = document.getElementById("userPwd").value;
+        alert(userId);
+        alert(userPwd);
+
+
+        if (userId == "" || userPwd == "" || userId.substr(0, 1) == " " || userPwd.substr(0, 1) == " ")
+        {
+            alert("ID 혹은 PWD를 입력해주세요");
+            return;
+        }
+
+        var x = document.getElementById("loginForm");
+        x.submit();
+        
+
+    }
+</script>
+</head>
+
+<body>
+    <app>Loading...</app>
+    <script src="_framework/blazor.webassembly.js"></script>
+
+
+
+</body>
+
+</html>

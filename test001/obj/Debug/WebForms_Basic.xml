@@ -1,0 +1,104 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+test001
+</name>
+</assembly>
+<members>
+<member name="T:test001.My.MyWebExtension">
+ <summary>
+ 웹 프로젝트용 My 네임스페이스에 사용할 수 있는 속성을 정의하는 데 사용되는 모듈입니다.
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:test001.My.MyWebExtension.Computer">
+ <summary>
+ 호스트 컴퓨터에 대한 정보를 반환합니다.
+ </summary>
+</member>
+<member name="P:test001.My.MyWebExtension.User">
+ <summary>
+ 현재 웹 사용자에 대한 정보를 반환합니다.
+ </summary>
+</member>
+<member name="P:test001.My.MyWebExtension.Request">
+ <summary>
+ Request 개체를 반환합니다.
+ </summary>
+</member>
+<member name="P:test001.My.MyWebExtension.Response">
+ <summary>
+ Response 개체를 반환합니다.
+ </summary>
+</member>
+<member name="P:test001.My.MyWebExtension.Log">
+ <summary>
+ Asp 로그 개체를 반환합니다.
+ </summary>
+</member>
+<member name="F:test001.SiteMaster._MainContent">
+<summary>
+MainContent 컨트롤입니다.
+</summary>
+<remarks>
+자동 생성된 필드입니다.
+수정하려면 디자이너 파일에서 코드 숨김 파일로 필드 선언을 이동합니다.
+</remarks>
+</member>
+<member name="F:test001.Site_Mobile._Head1">
+<summary>
+Head1 컨트롤입니다.
+</summary>
+<remarks>
+자동 생성된 필드입니다.
+수정하려면 디자이너 파일에서 코드 숨김 파일로 필드 선언을 이동합니다.
+</remarks>
+</member>
+<member name="F:test001.Site_Mobile._HeadContent">
+<summary>
+HeadContent 컨트롤입니다.
+</summary>
+<remarks>
+자동 생성된 필드입니다.
+수정하려면 디자이너 파일에서 코드 숨김 파일로 필드 선언을 이동합니다.
+</remarks>
+</member>
+<member name="F:test001.Site_Mobile._form1">
+<summary>
+form1 컨트롤입니다.
+</summary>
+<remarks>
+자동 생성된 필드입니다.
+수정하려면 디자이너 파일에서 코드 숨김 파일로 필드 선언을 이동합니다.
+</remarks>
+</member>
+<member name="F:test001.Site_Mobile._FeaturedContent">
+<summary>
+FeaturedContent 컨트롤입니다.
+</summary>
+<remarks>
+자동 생성된 필드입니다.
+수정하려면 디자이너 파일에서 코드 숨김 파일로 필드 선언을 이동합니다.
+</remarks>
+</member>
+<member name="F:test001.Site_Mobile._MainContent">
+<summary>
+MainContent 컨트롤입니다.
+</summary>
+<remarks>
+자동 생성된 필드입니다.
+수정하려면 디자이너 파일에서 코드 숨김 파일로 필드 선언을 이동합니다.
+</remarks>
+</member>
+<member name="F:test001.Site_Mobile._ViewSwitcher1">
+<summary>
+ViewSwitcher1 컨트롤입니다.
+</summary>
+<remarks>
+자동 생성된 필드입니다.
+수정하려면 디자이너 파일에서 코드 숨김 파일로 필드 선언을 이동합니다.
+</remarks>
+</member>
+</members>
+</doc>
