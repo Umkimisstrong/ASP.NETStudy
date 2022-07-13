@@ -20,7 +20,7 @@ namespace WebApp
             string id = Request.Form["Id"].ToString();      
             string pwd = Request.Form["Pwd"].ToString();
 
-
+            
 
             // 테스트
             /*
@@ -107,6 +107,8 @@ namespace WebApp
 
                 // db 클로즈
                 conn.Close();
+                Session["userId"] = id;
+
 
                 if (result == "1")
                 {
