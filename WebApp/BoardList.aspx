@@ -17,7 +17,7 @@
             width: 113px;
         }
         .auto-style5 {
-            width: 106px;
+            width: 380px;
         }
         .auto-style6 {
             width: 124px;
@@ -37,6 +37,16 @@
         .auto-style16 {
             width: 1307px;
         }
+        .auto-style18 {
+            margin-top: 0px;
+            width: 1318px;
+        }
+        .auto-style20 {
+            width: 147px;
+        }
+        .auto-style21 {
+            width: 139px;
+        }
     </style>
 </head>
 <body>
@@ -51,27 +61,33 @@
 <div class="content" >
     
     <div class="Board_Title">
+
+        <%--    
         <table border="1">
             <tr>
                 <th class="auto-style16" style="background-color: aliceblue;">게 시 판</th>
             </tr>
         </table>
+        --%>
         <form id="addForm" runat="server" >
                <asp:Button Text="글쓰기" runat="server" ID="AddBtn"/> 
         </form>
     </div>
     <%-- 번호 / 제목(댓글) / 작성자 / 작성일 / 조회수 --%>
-    <div class="Board_SubTitle">
+    <div class="Board_SubTitle" >
 
         <%-- 테이블 --%>
-        <table border="1" class="auto-style7">
+        <%--<table border="1" class="auto-style18">
             <tr>
                 <th style="background-color: aliceblue;" class="auto-style1">번호</th>
                 <th style="background-color: aliceblue;" class="auto-style2">제목</th>
                 <th style="background-color: aliceblue;" class="auto-style5">작성자</th>
-                <th style="background-color: aliceblue;" class="auto-style4">작성일</th>
-                <th style="background-color: aliceblue;" class="auto-style6">조회수</th>
+                <th style="background-color: aliceblue;" class="auto-style21">작성일</th>
+                <th style="background-color: aliceblue;" class="auto-style20">조회수</th>
             </tr>
+        </table>--%>
+       <%--
+           <table border="1" class="auto-style7">
             <tr>
                 <th class="auto-style14">1</th>
                 <th class="auto-style15">안녕하세요 김효섭입니다.</th>
@@ -93,7 +109,11 @@
                 <th class="auto-style4">2022-07-13</th>
                 <th class="auto-style6">0</th>
             </tr>
+            
         </table>
+           --%>
+        <asp:Table ID="Board_List" runat="server" BorderStyle="Solid" BorderWidth="1px" CellSpacing="1" BackColor="Window" CellPadding="5">
+        </asp:Table>
     </div>
 
 
