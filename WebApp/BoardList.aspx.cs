@@ -16,6 +16,7 @@ namespace WebApp
         public int rowNum { get ; set ; }
         public int board_id { get; set; }
         public string board_title { get; set; }
+        public string board_content { get; set; }
         public int board_hitCount { get; set; }
         public string board_date { get; set; }
         public string u_name { get; set; }
@@ -160,7 +161,7 @@ namespace WebApp
                         tr.Cells.Add(td);
 
                         td = new TableCell();
-                        td.Text = dto.board_title;
+                        td.Text = "<a href='BoardDetail.aspx?board_id=" +dto.board_id.ToString()+ "' style='text-decoration: none;'>" + dto.board_title +"</a> ";
                         tr.Cells.Add(td);
 
                         td = new TableCell();

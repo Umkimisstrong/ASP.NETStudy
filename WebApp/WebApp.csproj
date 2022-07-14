@@ -67,12 +67,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BoardDetail.aspx" />
     <Content Include="BoardList.aspx" />
     <Content Include="BoardLogin2.aspx" />
     <Content Include="BoardLoginValidate.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoardDetail.aspx.cs">
+      <DependentUpon>BoardDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardDetail.aspx.designer.cs">
+      <DependentUpon>BoardDetail.aspx</DependentUpon>
+    </Compile>
     <Compile Include="BoardList.aspx.cs">
       <DependentUpon>BoardList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
