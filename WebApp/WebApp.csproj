@@ -68,6 +68,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="BoardDetail.aspx" />
+    <Content Include="BoardInsert.aspx" />
+    <Content Include="BoardInsert_ok.aspx" />
     <Content Include="BoardList.aspx" />
     <Content Include="BoardLogin2.aspx" />
     <Content Include="BoardLoginValidate.aspx" />
@@ -79,6 +81,20 @@
     </Compile>
     <Compile Include="BoardDetail.aspx.designer.cs">
       <DependentUpon>BoardDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardInsert.aspx.cs">
+      <DependentUpon>BoardInsert.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardInsert.aspx.designer.cs">
+      <DependentUpon>BoardInsert.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardInsert_ok.aspx.cs">
+      <DependentUpon>BoardInsert_ok.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardInsert_ok.aspx.designer.cs">
+      <DependentUpon>BoardInsert_ok.aspx</DependentUpon>
     </Compile>
     <Compile Include="BoardList.aspx.cs">
       <DependentUpon>BoardList.aspx</DependentUpon>

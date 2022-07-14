@@ -32,7 +32,7 @@ namespace WebApp
 
             string id = Page.Session["userid"].ToString();
 
-            //Response.Write(id); 성공
+            Response.Write(id);
 
 
 
@@ -203,6 +203,14 @@ namespace WebApp
                 Response.Write(ex.ToString());
             }
 
+        }
+
+        protected void AddBtn_Click(object sender, EventArgs e)
+        {
+            string id = Page.Session["userid"].ToString();
+
+            Session["userId"] = id;
+            Response.Redirect("BoardInsert.aspx");
         }
     }
 }

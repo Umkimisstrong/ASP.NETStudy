@@ -43,10 +43,9 @@ namespace WebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            string id = "";
             if (Page.Session["userid"].ToString() != null)
-            {
-                string id = Page.Session["userid"].ToString();
-            }
+                id = Page.Session["userid"].ToString();
             
             //Response.Write(id);
             string board_id = Request.QueryString["board_id"].ToString();
@@ -56,14 +55,7 @@ namespace WebApp
             try
             {
                 conn = new SqlConnection(ConfigurationManager.ConnectionStrings["testData"].ToString());
-                /*
-                if (conn != null)
-                    //Response.Write("DB연결 성공~!");
-                else
-                    Response.Write("실패 ㅠㅜ");
-                */
-
-                // db 오픈
+               
                 conn.Open();
 
                 // SqlCommand 객체 생성
@@ -72,11 +64,10 @@ namespace WebApp
                 // SqlCommand 객체의 연결은 testData 의 Connection() 을 의미
                 sc.Connection = conn;
 
-                // 해당 id, pwd 조회 ▼
-
                 // 쿼리문 작성
                 string sql = string.Format("SELECT CONVERT(INT, ROWNUM) AS [ROWNUM], BOARD_ID, BOARD_TITLE, BOARD_HITCOUNT, CONVERT(VARCHAR(8), BOARD_DATE, 112) AS [BOARD_DATE], BOARD_CONTENT, U_NAME FROM BOARD_LIST_VIEW WHERE BOARD_ID = {0}", board_id);
                 
+                // sql 실행
                 sc.CommandText = sql;
 
                 // commandtype 정의

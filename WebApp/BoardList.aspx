@@ -71,7 +71,7 @@
         </table>
         --%>
         <form id="addForm" runat="server" >
-               <asp:Button Text="글쓰기" runat="server" ID="AddBtn"/> 
+               <asp:Button Text="글쓰기" runat="server" ID="AddBtn" OnClick="AddBtn_Click"/> 
         </form>
     </div>
     <%-- 번호 / 제목(댓글) / 작성자 / 작성일 / 조회수 --%>
