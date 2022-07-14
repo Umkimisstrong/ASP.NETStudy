@@ -77,7 +77,7 @@ namespace WebApp
                 sc.CommandText = sql;
 
                 // commandtype 정의
-                sc.CommandType = System.Data.CommandType.Text;
+                sc.CommandType = CommandType.Text;
 
                 // sqlDataAdapter 선언
                 SqlDataAdapter da = new SqlDataAdapter();
