@@ -16,12 +16,15 @@ namespace WebApp
             if (Page.Session["userId"].ToString() != null)
             {
                 id = Page.Session["userId"].ToString();
+
             }
             else
             {
                 Response.Redirect("BoardLogin2.aspx");
             }
             //Response.Write(id);
+
+
         }
     }
 }

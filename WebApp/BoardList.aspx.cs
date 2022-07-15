@@ -20,6 +20,7 @@ namespace WebApp
         public int board_hitCount { get; set; }
         public string board_date { get; set; }
         public string u_name { get; set; }
+        public string u_id { get; set; }
 
     }
     public partial class BoardList : System.Web.UI.Page
@@ -30,6 +31,10 @@ namespace WebApp
         {
             // 이전 페이지 : BoardLogin2.aspx 에서 id를 Session 으로 받기
 
+            if (!Page.IsPostBack)
+            {
+                //
+            }
             string id = Page.Session["userid"].ToString();
 
             Response.Write(id);
@@ -74,7 +79,7 @@ namespace WebApp
                 // 해당 id, pwd 조회 ▼
 
                 // 쿼리문 작성
-                string sql = "SELECT CONVERT(INT, ROWNUM) AS [ROWNUM], BOARD_ID, BOARD_TITLE, BOARD_HITCOUNT, CONVERT(VARCHAR(8), BOARD_DATE, 112) AS [BOARD_DATE], U_NAME FROM BOARD_LIST_VIEW";
+                string sql = "SELECT CONVERT(INT, ROW_NUMBER() OVER(ORDER BY BOARD_ID)) AS [ROWNUM], BOARD_ID, BOARD_TITLE, BOARD_HITCOUNT, CONVERT(VARCHAR(8), BOARD_DATE, 112) AS [BOARD_DATE], U_NAME FROM BOARD_LIST_VIEW WHERE DEL_CHECK = 0";
                 sc.CommandText = sql;
 
                 // commandtype 정의

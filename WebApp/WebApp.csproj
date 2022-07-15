@@ -67,15 +67,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BoardDelete.aspx" />
     <Content Include="BoardDetail.aspx" />
     <Content Include="BoardInsert.aspx" />
     <Content Include="BoardInsert_ok.aspx" />
     <Content Include="BoardList.aspx" />
     <Content Include="BoardLogin2.aspx" />
     <Content Include="BoardLoginValidate.aspx" />
+    <Content Include="BoardReplyInsert.aspx" />
+    <Content Include="BoardReplyInsert_ok.aspx" />
+    <Content Include="BoardUpdate.aspx" />
+    <Content Include="BoardUpdate_ok.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoardDelete.aspx.cs">
+      <DependentUpon>BoardDelete.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardDelete.aspx.designer.cs">
+      <DependentUpon>BoardDelete.aspx</DependentUpon>
+    </Compile>
     <Compile Include="BoardDetail.aspx.cs">
       <DependentUpon>BoardDetail.aspx</DependentUpon>
     </Compile>
@@ -116,6 +128,34 @@
     </Compile>
     <Compile Include="BoardLoginValidate.aspx.designer.cs">
       <DependentUpon>BoardLoginValidate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardReplyInsert.aspx.cs">
+      <DependentUpon>BoardReplyInsert.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardReplyInsert.aspx.designer.cs">
+      <DependentUpon>BoardReplyInsert.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardReplyInsert_ok.aspx.cs">
+      <DependentUpon>BoardReplyInsert_ok.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardReplyInsert_ok.aspx.designer.cs">
+      <DependentUpon>BoardReplyInsert_ok.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardUpdate.aspx.cs">
+      <DependentUpon>BoardUpdate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardUpdate.aspx.designer.cs">
+      <DependentUpon>BoardUpdate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardUpdate_ok.aspx.cs">
+      <DependentUpon>BoardUpdate_ok.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardUpdate_ok.aspx.designer.cs">
+      <DependentUpon>BoardUpdate_ok.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

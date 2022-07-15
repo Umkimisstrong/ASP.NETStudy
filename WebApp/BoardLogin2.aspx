@@ -74,7 +74,7 @@
                          PWD
                      </th>
                      <td>
-                         <input type="text" style="width:250px;" runat="server" placeholder="id를 입력하세요" id="Pwd"/>
+                         <input type="password" style="width:250px;" runat="server" placeholder="pwd를 입력하세요" id="Pwd"/>
                      </td>
                  </tr>
                  <tr>

@@ -114,6 +114,7 @@
         </table>
            --%>
         <asp:Table ID="Board_List" runat="server" BorderStyle="Solid" BorderWidth="1px" CellSpacing="1" BackColor="Window" CellPadding="5">
+
         </asp:Table>
     </div>
 
@@ -124,9 +125,9 @@
 
 
     <%-- 페이징 --%>
-    <div>
+    <%--<div>
         <a href="">이전</a> 1 2 3 4 5 6 7 8 9 10 다음
-    </div>
+    </div>--%>
 
 </div>
 
