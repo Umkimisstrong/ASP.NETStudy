@@ -56,12 +56,14 @@ namespace WebApp
             
             string board_id = "";
             string user_id = "";
+            string pageNum = "";
             string reply_content = "";
             try
             {
                 // 이전 페이지 : BoardDetail.aspx 로 부터 넘어온 데이터 수신
                 board_id = Request.QueryString["board_id"].ToString();
                 user_id = Page.Session["userid"].ToString();
+                pageNum = Request.QueryString["pageNum"].ToString();
                 reply_content = Reply_Content.Text;
 
                 if (reply_content.Equals("") || reply_content.Substring(0, 1).Equals(" "))
@@ -114,7 +116,7 @@ namespace WebApp
                 if (result == 1)
                 {
 
-                    url = "BoardDetail.aspx?board_id=" + board_id;
+                    url = "BoardDetail.aspx?board_id=" + board_id+"&pageNum="+pageNum;
                     Response.Redirect(url);
                 }
                 else

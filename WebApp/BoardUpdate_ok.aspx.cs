@@ -42,6 +42,7 @@ namespace WebApp
             Response.Write(board_title);
             Response.Write(board_content);
             */
+            string pageNum = Request.Form["PageNum"].ToString();
             
             try
             {
@@ -65,7 +66,7 @@ namespace WebApp
                 if (result > 0)
                 {
                     bool flag = true;
-                    string url = "BoardDetail.aspx?board_id=" + board_id;
+                    string url = "BoardDetail.aspx?board_id=" + board_id +"&pageNum="+pageNum;
                     Response.Redirect(url);
                     Response.Write(alertMsg(true));
                 }

@@ -47,6 +47,20 @@
         .auto-style21 {
             width: 139px;
         }
+
+        .content {
+           text-align: center;
+        }
+
+        .Board_Title {
+            display:inline-block;
+        }
+
+        /*.Board_SubTitle {
+            display:inline-block;
+        }
+
+*/
     </style>
 </head>
 
@@ -59,75 +73,34 @@
     <hr />
 </div>
 
-<div class="content" >
+<div class="content">
     
     <div class="Board_Title">
 
-        <%--    
-        <table border="1">
-            <tr>
-                <th class="auto-style16" style="background-color: aliceblue;">게 시 판</th>
-            </tr>
-        </table>
-        --%>
-        <form id="addForm" runat="server" >
-               <asp:Button Text="글쓰기" runat="server" ID="AddBtn" OnClick="AddBtn_Click"/> 
-        </form>
-    </div>
-    <%-- 번호 / 제목(댓글) / 작성자 / 작성일 / 조회수 --%>
-    <div class="Board_SubTitle" >
 
-        <%-- 테이블 --%>
-        <%--<table border="1" class="auto-style18">
-            <tr>
-                <th style="background-color: aliceblue;" class="auto-style1">번호</th>
-                <th style="background-color: aliceblue;" class="auto-style2">제목</th>
-                <th style="background-color: aliceblue;" class="auto-style5">작성자</th>
-                <th style="background-color: aliceblue;" class="auto-style21">작성일</th>
-                <th style="background-color: aliceblue;" class="auto-style20">조회수</th>
-            </tr>
-        </table>--%>
-       <%--
-           <table border="1" class="auto-style7">
-            <tr>
-                <th class="auto-style14">1</th>
-                <th class="auto-style15">안녕하세요 김효섭입니다.</th>
-                <th class="auto-style13">김효섭</th>
-                <th class="auto-style4">2022-07-13</th>
-                <th class="auto-style6">0</th>
-            </tr>
-            <tr>
-                <th class="auto-style14">2</th>
-                <th class="auto-style15">안녕하세요 김상기입니다.</th>
-                <th class="auto-style13">김상기</th>
-                <th class="auto-style4">2022-07-13</th>
-                <th class="auto-style6">0</th>
-            </tr>
-            <tr>
-                <th class="auto-style14">3</th>
-                <th class="auto-style15">안녕하세요 김화입니다.</th>
-                <th class="auto-style13">김화</th>
-                <th class="auto-style4">2022-07-13</th>
-                <th class="auto-style6">0</th>
-            </tr>
-            
-        </table>
-           --%>
+        <div class="Board_SubTitle">
+            <asp:Table ID="SubTitle" runat="server" BorderStyle="Solid" BorderWidth="1px" CellSpacing="1" BackColor="Window" CellPadding="5">
+
+            </asp:Table>
+        </div>
+        
+        <div class="Board_SubTitle" style="text-align: right;">
+            <form id="addForm" runat="server" >
+                   <asp:Button Text="글쓰기" runat="server" ID="AddBtn" OnClick="AddBtn_Click"/> 
+            </form>
+        </div>
+        
         <asp:Table ID="Board_List" runat="server" BorderStyle="Solid" BorderWidth="1px" CellSpacing="1" BackColor="Window" CellPadding="5">
 
         </asp:Table>
+
+        <%-- 페이징 --%>    
+        <asp:Label ID="PageIndex" runat="server"></asp:Label>
+
+        
     </div>
 
-
-    <%-- 1     안녕하세요 김효섭입니다. /      김상기    /   2022-07-13 12:00:33 / 0 --%>
-    <%-- 2     안녕하세요 김상기입니다. /      김상기    /   2022-07-13 12:00:33 / 0 --%>
-    <%-- 3     안녕하세요 김상기입니다. /      김상기    /   2022-07-13 12:00:33 / 0 --%>
-
-
-    <%-- 페이징 --%>
-    <%--<div>
-        <a href="">이전</a> 1 2 3 4 5 6 7 8 9 10 다음
-    </div>--%>
+    
 
 </div>
 

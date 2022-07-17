@@ -46,6 +46,16 @@
             <table>
                 <tr>
                     <td colspan="2">
+                        [페 이 지]
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <asp:TextBox ID="PageNum" runat="server" ReadOnly="true"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
                         [번 호]
                     </td>
                 </tr>

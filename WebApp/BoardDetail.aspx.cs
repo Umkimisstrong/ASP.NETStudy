@@ -53,6 +53,9 @@ namespace WebApp
             //Response.Write(board_id);
             SqlConnection conn = null;
 
+
+            
+
             try
             {
                 conn = new SqlConnection(ConfigurationManager.ConnectionStrings["testData"].ToString());
@@ -320,16 +323,18 @@ namespace WebApp
         }
         protected void Back_Click(object sender, EventArgs e)
         {
-            Response.Redirect("BoardList.aspx");
+            string pageNum = Request.QueryString["pageNum"].ToString();
+            string url = "BoardList.aspx?pageNum="+pageNum;
+            Response.Redirect(url);
         }
 
         protected void Reply_Click(object sender, EventArgs e)
         {
             // board_id 가져오기
             string board_id = Board_Id.Text;
-
+            string pageNum = Request.QueryString["pageNum"].ToString();
             // board_id를 url 에 포함
-            string url = "BoardReplyInsert.aspx?board_id=" + board_id;
+            string url = "BoardReplyInsert.aspx?board_id=" + board_id +"&pageNum="+pageNum;
 
             // 세션으로 user Id 설정해주기
             Session["userid"] = Page.Session["userid"].ToString();
@@ -371,24 +376,25 @@ namespace WebApp
             string url = "";
             // 수정을 하기 위한 데이터 : 게시물id, 게시물 제목, 게시물 내용
             string board_id = Board_Id.Text;
-
+            string pageNum = Request.QueryString["pageNum"].ToString();
             // 세션 유지를 위한 데이터
             Session["userid"] = Page.Session["userid"].ToString();
             string board_content = textarea.Text;
             string board_title = Board_Detail.Rows[0].Cells[1].Text;
             board_title = board_title.Substring(2, board_title.Length - 4);
 
+            
 
             //Response.Write(board_content);
             //Response.Write(board_title);
             //url = "BoardUpdate.aspx?board_id=" + board_id + "&board_title=" + board_title + "&board_content=" + board_content;
-            submitForm("BoardUpdate.aspx", board_id, board_title, board_content);
+            submitForm("BoardUpdate.aspx", board_id, board_title, board_content, pageNum);
 
         }
 
 
 
-        private void submitForm(string url, string board_id, string board_title, string board_content)
+        private void submitForm(string url, string board_id, string board_title, string board_content, string pageNum)
         {
             // System.Web.HttpContext.Current.Response.Write -> 현재 페이지에 해당 내용을 HTML 로 적는다.
             System.Web.HttpContext.Current.Response.Write("<form name='newForm' method='post' action='" + url + "'>");
@@ -398,6 +404,7 @@ namespace WebApp
             System.Web.HttpContext.Current.Response.Write(string.Format("<input type = hidden name ='board_title' value='{0}'>", board_title));
 
             System.Web.HttpContext.Current.Response.Write(string.Format("<input type = hidden name ='board_content' value='{0}'>", board_content));
+            System.Web.HttpContext.Current.Response.Write(string.Format("<input type = hidden name ='pageNum' value='{0}'>", pageNum));
 
             System.Web.HttpContext.Current.Response.Write("</form>");
             System.Web.HttpContext.Current.Response.Write("</body>");

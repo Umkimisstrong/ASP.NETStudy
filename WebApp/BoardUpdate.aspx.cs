@@ -18,9 +18,11 @@ namespace WebApp
             string board_id = Request.Form["board_id"].ToString();
             string board_title = Request.Form["board_title"].ToString();
             string board_content = Request.Form["board_content"].ToString();
+            string pageNum = Request.Form["pageNum"].ToString();
             Board_Id.Text = board_id;
             Board_Title.Text = board_title;
             Board_Content.Text = board_content;
+            PageNum.Text = pageNum;
 
             //Response.Write(Board_Id.Text);
             //string board_id = Request.Form["board_id"].ToString();
