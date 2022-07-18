@@ -210,6 +210,7 @@ namespace WebApp
         public string u_id { get; set; }
 
     }
+
     public partial class BoardList : System.Web.UI.Page
     {
         
@@ -360,16 +361,14 @@ namespace WebApp
                         }
                     }
                     // 값을 추출하자
-                    
 
-                    
                     TableRow tr;
                     TableCell td;
 
                     // 로그인 한 유저 테이블에 명시
                     tr = new TableRow();
                     td = new TableCell();
-                    td.Text = "환영합니다" +  u_name + "의 게시판입니다";
+                    td.Text = "♥환영합니다 " +  u_name + " 님의 게시판입니다♥";
                     tr.Cells.Add(td);
                     tr.BackColor = Color.FromName("#ccccff");
                     SubTitle.Rows.Add(tr);

@@ -321,6 +321,8 @@ namespace WebApp
 
 
         }
+
+        // 돌아가기
         protected void Back_Click(object sender, EventArgs e)
         {
             string pageNum = Request.QueryString["pageNum"].ToString();
@@ -328,6 +330,7 @@ namespace WebApp
             Response.Redirect(url);
         }
 
+        // 댓글작성 클릭
         protected void Reply_Click(object sender, EventArgs e)
         {
             // board_id 가져오기
@@ -342,6 +345,7 @@ namespace WebApp
             Response.Redirect(url);
         }
 
+        // 게시물삭제 클릭
         protected void Delete_Click(object sender, EventArgs e)
         {
             Response.Write(confirmMsg());
@@ -349,6 +353,8 @@ namespace WebApp
             //Response.Write("바보");
         }
 
+
+        // 게시물삭제알람
         protected string confirmMsg()
         {
             string result = "";
@@ -371,6 +377,7 @@ namespace WebApp
             return result;
         }
 
+        // 게시물수정 클릭
         protected void Update_Click(object sender, EventArgs e)
         {
             string url = "";
@@ -393,7 +400,7 @@ namespace WebApp
         }
 
 
-
+        // submit 액션
         private void submitForm(string url, string board_id, string board_title, string board_content, string pageNum)
         {
             // System.Web.HttpContext.Current.Response.Write -> 현재 페이지에 해당 내용을 HTML 로 적는다.
