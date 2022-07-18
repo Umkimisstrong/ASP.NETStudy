@@ -7,7 +7,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<style type="text/css">
+    body
+        {
+            background-color: white;
+            text-align:center;
+        }
+    .header
+    {
+        display:inline-block;
+        width: 650px;
+    }
 
+    .content
+    {
+        display:inline-block;
+        text-align:center;
+    }
+    .Board_SubTitle
+    {
+        display:inline-block;
+    }
+</style>
 
 </head>
 <body>
@@ -36,21 +57,24 @@
     <form id="backForm" runat="server">
     <div class="Board_SubTitle" >
         
-        <asp:Table ID="Board_Detail" runat="server" BorderStyle="Ridge" BorderWidth="2px" CellSpacing="1" BackColor="Window" CellPadding="6" Width="700px">
+        <asp:Table ID="Board_Detail" runat="server" BorderStyle="Ridge" BorderWidth="2px" CellSpacing="1" BackColor="Window" CellPadding="6" Width="600px">
 
         </asp:Table>
-        <asp:Textbox ID="textarea" Width="691px" mode="multiline" runat="server" ReadOnly="true" Font-Bold="true" Font-Size="Large"></asp:Textbox> <br />
+        <asp:Textbox ID="textarea" Width="591px" mode="multiline" runat="server" ReadOnly="true" Font-Bold="true" Font-Size="Large">
+
+        </asp:Textbox> <br />
         
         
         
 
-    </div>
+    </div class="Board_Title">
         <br />
         <br />
+        
     <div>
         <h2>댓 글</h2>
         
-        <asp:Table ID="Board_Reply" runat="server" BorderStyle="Ridge" BorderWidth="2px" CellSpacing="1" BackColor="Window" CellPadding="6" Width="700px">
+        <asp:Table ID="Board_Reply" runat="server" BorderStyle="Ridge" BorderWidth="2px" CellSpacing="1" BackColor="Window" CellPadding="6" Width="600px">
 
         </asp:Table>
 

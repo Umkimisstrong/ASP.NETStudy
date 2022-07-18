@@ -224,8 +224,12 @@ namespace WebApp
             {
                 //
             }
+            /*
+            if (Page.Session["userid"].ToString())
+            { 
+            }*/
             string id = Page.Session["userid"].ToString();
-
+            
             //Response.Write(id);
             
 

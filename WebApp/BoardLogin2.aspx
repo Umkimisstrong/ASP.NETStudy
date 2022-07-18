@@ -6,6 +6,80 @@
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
      <title>BOARD_LOGIN</title>
+<style type="text/css">
+
+    body
+        {
+            background-color: white;
+            text-align:center;
+        }
+    .header
+    {
+        display:inline-block;
+        width: 570px;
+    }
+    .content
+    {
+        text-align:center;
+        
+        
+    }
+        .content .loginContent
+        {
+            display:inline-block;
+            font-size: 20pt;
+            width: 560px;
+            background-color:white;
+            border:inset;
+        }
+
+    .loginConent .loginTable
+    {
+        width:550px;
+        border: none;
+    }
+
+    .textBox
+    {
+        width: 250px;
+        height: 40px;
+        font-size: 18pt;
+    }
+    .textBox:hover
+    {
+        background-color: cornflowerblue;
+
+    }
+
+    .loginTable th
+    {
+        text-align: right;
+    }
+
+    .loginTable td
+    {
+        text-align: center;
+    }
+
+    .loginBtn
+    {
+        width:70%;
+        height:40px;
+        border:none;
+        background-color: dodgerblue;
+        
+    }
+        .loginBtn:hover
+        {
+            background-color:blue;
+            color:whitesmoke;
+        }
+        .loginBtn:active
+        {
+            background-color:yellow;
+            color:black;
+        }
+</style>
 
 </head>
 
@@ -59,29 +133,29 @@
 <div class="content">
 
     <form id="form1" name="loginForm" runat="server">
-        <div>
-             <table border="1" style="width:300px;">
+        <div class="loginContent">
+             <table class="loginTable">
                  <tr>
                      <th>
-                         ID
+                         아이디(이메일)
                      </th>
                      <td>
-                         <input type="text" style="width:250px;" runat="server" placeholder="id를 입력하세요" id="Id"/>
+                          <input class="textBox" type="text" runat="server" placeholder="yyyyy@aaaaaa.com" id="Id"/>
                      </td>
                  </tr>
                  <tr>
                      <th>
-                         PWD
+                         비밀번호(주민등록번호)
                      </th>
                      <td>
-                         <input type="password" style="width:250px;" runat="server" placeholder="pwd를 입력하세요" id="Pwd"/>
+                          <input class="textBox" type="password" runat="server" placeholder="xxxxxx-xxxxxxx" id="Pwd"/>
                      </td>
                  </tr>
                  <tr>
-                     <th colspan="2">
-                        <input type="button" style="width:300px;" value="LOGIN" onclick="loginBtns()"/>
+                     <td colspan="2">
+                        <input type="button" class="loginBtn" value="LOGIN" onclick="loginBtns()"/>
                         <asp:Button Text="LOGIN" runat="server" hidden="hidden" ID="loginBtn" onclick="LoginBtn_Click"/>
-                     </th>
+                     </td>
                  </tr>
              </table>
         </div>

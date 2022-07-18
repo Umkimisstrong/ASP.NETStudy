@@ -60,7 +60,16 @@
             display:inline-block;
         }
 
-*/
+*/  body
+        {
+            background-color: white;
+            text-align:center;
+        }
+    .header
+    {
+        display:inline-block;
+        width: 500px;
+    }
     </style>
 </head>
 
@@ -79,7 +88,7 @@
 
 
         <div class="Board_SubTitle">
-            <asp:Table ID="SubTitle" runat="server" BorderStyle="Solid" BorderWidth="1px" CellSpacing="1" BackColor="Window" CellPadding="5">
+            <asp:Table ID="SubTitle" runat="server" BorderStyle="Solid" BorderWidth="1px" CellSpacing="1" BackColor="Window" CellPadding="5" Width="468px">
 
             </asp:Table>
         </div>
@@ -95,7 +104,7 @@
         </asp:Table>
 
         <%-- 페이징 --%>    
-        <asp:Label ID="PageIndex" runat="server"></asp:Label>
+        <asp:Label ID="PageIndex" runat="server" Font-Size="16pt"></asp:Label>
 
         
     </div>
