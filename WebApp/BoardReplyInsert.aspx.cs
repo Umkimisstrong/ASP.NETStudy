@@ -63,6 +63,9 @@ namespace WebApp
                 // 이전 페이지 : BoardDetail.aspx 로 부터 넘어온 데이터 수신
                 board_id = Request.QueryString["board_id"].ToString();
                 user_id = Page.Session["userid"].ToString();
+                if (user_id == null)
+                    Response.Redirect("BoardLogin2.aspx");
+
                 pageNum = Request.QueryString["pageNum"].ToString();
                 reply_content = Reply_Content.Text;
 

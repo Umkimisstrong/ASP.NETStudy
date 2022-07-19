@@ -40,19 +40,9 @@
     <hr />
 </div>
 
-  <div class="content" >
+<div class="content" >
     
-    <div class="Board_Title">
-
-        <%--    
-        <table border="1">
-            <tr>
-                <th class="auto-style16" style="background-color: aliceblue;">게 시 판</th>
-            </tr>
-        </table>
-        --%>
-        
-    </div>
+    
     <%-- 번호 / 제목(댓글) / 작성자 / 작성일 / 조회수 --%>
     <form id="backForm" runat="server">
     <div class="Board_SubTitle" >
@@ -63,34 +53,23 @@
         <asp:Textbox ID="textarea" Width="591px" mode="multiline" runat="server" ReadOnly="true" Font-Bold="true" Font-Size="Large">
 
         </asp:Textbox> <br />
-        
-        
-        
-
-    </div class="Board_Title">
-        <br />
-        <br />
-        
-    <div>
-        <h2>댓 글</h2>
-        
-        <asp:Table ID="Board_Reply" runat="server" BorderStyle="Ridge" BorderWidth="2px" CellSpacing="1" BackColor="Window" CellPadding="6" Width="600px">
-
-        </asp:Table>
 
     </div>
 
-    
-        <div>
-            <asp:Button ID="Back" Text="돌아가기" OnClick="Back_Click" runat="server"/>
-            <asp:Button ID="Reply" Text="댓글작성" OnClick="Reply_Click" runat="server"/>
-            <asp:Button ID="Delete" Text="게시물삭제" runat="server" Visible="false" OnClick="Delete_Click"></asp:Button>
-            <asp:Button ID="Update" Text="게시물수정" runat="server" Visible="false" OnClick="Update_Click"/>
-
-            <%-- 숨겨진항목 --%>
-            <asp:TextBox ID="Board_Id" Visible="false" runat="server"></asp:TextBox>
-        </div>
+        <br />
+        <br />
         
+    
+        <h2>댓 글</h2>
+        <asp:Table ID="Board_Reply" runat="server" BorderStyle="Ridge" BorderWidth="2px" CellSpacing="1" BackColor="Window" CellPadding="6" Width="600px">
+        </asp:Table>
+        <asp:Button ID="Back" Text="돌아가기" OnClick="Back_Click" runat="server"/>
+        <asp:Button ID="Reply" Text="댓글작성" OnClick="Reply_Click" runat="server"/>
+        <asp:Button ID="Delete" Text="게시물삭제" runat="server" Visible="false" OnClick="Delete_Click"></asp:Button>
+        <asp:Button ID="Update" Text="게시물수정" runat="server" Visible="false" OnClick="Update_Click"/>
+
+        <%-- 숨겨진항목 --%>
+        <asp:TextBox ID="Board_Id" Visible="false" runat="server"></asp:TextBox>
     </form>
 
 </div>

@@ -47,7 +47,7 @@ namespace WebApp
             if (Page.Session["userid"] != null)
                 id = Page.Session["userid"].ToString();
             else
-                Response.Redirect("BoardLogin.aspx");
+                Response.Redirect("BoardLogin2.aspx");
             //Response.Write(id);
             string board_id = Request.QueryString["board_id"].ToString();
             //Response.Write(board_id);

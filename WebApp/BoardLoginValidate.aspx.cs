@@ -17,7 +17,9 @@ namespace WebApp
 
             // 이전 페이지 : BoardLogin2.aspx 에서 id 와 pwd 를 받아오기
             
-            string id = Request.Form["Id"].ToString();      
+            string id = Request.Form["Id"].ToString();
+            if (id == null)
+                Response.Redirect("BoardLogin2.aspx");
             string pwd = Request.Form["Pwd"].ToString();
 
             

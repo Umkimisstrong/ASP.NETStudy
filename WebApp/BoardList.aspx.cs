@@ -70,6 +70,33 @@ namespace WebApp
             return result;
         }
 
+        public int getDataCount(string searchKey, string searchValue)
+        {
+
+            searchValue = "%" + searchValue + "%";
+            int result = 0;
+            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["testData"].ToString());
+            conn.Open();
+            SqlCommand sc = new SqlCommand();
+            sc.Connection = conn;
+            string sql = string.Format("SELECT COUNT(*) AS [DATACOUNT] FROM BOARD_LIST_VIEW2 WHERE {0} LIKE '{1}'", searchKey, searchValue);
+                          
+            sc.CommandText = sql;
+            sc.CommandType = CommandType.Text;
+            SqlDataAdapter da = new SqlDataAdapter();
+            da.SelectCommand = sc;
+            DataSet ds = new DataSet();
+            da.Fill(ds, "[BOARD_LIST_VIEW2]");
+            List<int> count = new List<int>();
+            foreach (DataRow row in ds.Tables[0].Rows)
+            {
+                result = (int)row["DATACOUNT"];
+            }
+
+            conn.Close();
+            return result;
+        }
+
 
 
         // 전체페이지 수를 구하는 메소드
@@ -92,7 +119,7 @@ namespace WebApp
         // currentPage : 현재 표시할 페이지
         // totalPage : 전체 페이지 수
         // listUrl : 링크를 설정할 url
-        public String pageIndexList(int currentPage, int totalPage, String listUrl)
+        public string pageIndexList(int currentPage, int totalPage, string listUrl, string searchKey, string searchValue)
         {
             // 페이징 문자열을 저장할 변수
             string strList = "";
@@ -140,7 +167,7 @@ namespace WebApp
             // 1. 페이지(처음으로)
             if ((totalPage > numPerBlock) && (currentPage > 0))
             {
-                strList += string.Format("<a href='{0}pageNum=1' style='font-weight:bold; text-decoration: none;'>[GO FIRST]</a>      ", listUrl); 
+                strList += string.Format("<a href='{0}pageNum=1&searchKey={1}&searchValue={2}' style='font-weight:bold; text-decoration: none;'>[GO FIRST]</a> ", listUrl, searchKey, searchValue); 
 
             }
 
@@ -150,7 +177,7 @@ namespace WebApp
             if ((totalPage > numPerBlock) && (currentPageSetup > 0))
             {
 
-                strList += string.Format("<a href='{0}pageNum={1}' style='font-weight:bold; text-decoration: none;'>◀</a>   ", listUrl, n);
+                strList += string.Format("<a href='{0}pageNum={1}&searchKey={2}&searchValue={3}' style='font-weight:bold; text-decoration: none;'>◀</a>   ", listUrl, n, searchKey, searchValue);
 
             }
 
@@ -166,7 +193,7 @@ namespace WebApp
                 }
                 else
                 {
-                    strList += string.Format("<a href='{0}pageNum={1}' style='font-weight:bold; text-decoration: none;'>{1}</a>  ", listUrl, page);
+                    strList += string.Format("<a href='{0}pageNum={1}&searchKey={2}&searchValue={3}' style='font-weight:bold; text-decoration: none;'>{1}</a>  ", listUrl, page, searchKey, searchValue);
                 }
 
                 page++;
@@ -183,13 +210,13 @@ namespace WebApp
 
             if ((totalPage - currentPageSetup) > numPerBlock)
             {
-                strList += string.Format("   <a href='{0}pageNum={1}' style='font-weight:bold; text-decoration: none;'>▶</a>", listUrl, n );
+                strList += string.Format("   <a href='{0}pageNum={1}&searchKey={2}&searchValue={3}' style='font-weight:bold; text-decoration: none;'>▶</a>", listUrl, n, searchKey, searchValue );
             }
 
             // 5. 마지막페이지
             if ((totalPage > numPerBlock) && (currentPageSetup + numPerBlock) < totalPage)
             {
-                strList += string.Format("      <a href='{0}pageNum={1}' style='font-weight:bold; text-decoration: none;'>[GO LAST]</a>", listUrl, totalPage);
+                strList += string.Format("      <a href='{0}pageNum={1}&searchKey={2}&searchValue={3}' style='font-weight:bold; text-decoration: none;'>[GO LAST]</a>", listUrl, totalPage, searchKey, searchValue);
             }
 
             return strList;
@@ -218,20 +245,12 @@ namespace WebApp
         protected void Page_Load(object sender, EventArgs e)
         {
             
-            // 이전 페이지 : BoardLogin2.aspx 에서 id를 Session 으로 받기
+            string id = (string)Page.Session["userid"];
+            if (id == null)
+                Response.Redirect("BoardLogin2.aspx");
+            else
+                id = Page.Session["userid"].ToString();
 
-            if (!Page.IsPostBack)
-            {
-                //
-            }
-            /*
-            if (Page.Session["userid"].ToString())
-            { 
-            }*/
-            string id = Page.Session["userid"].ToString();
-            
-            //Response.Write(id);
-            
 
             // 게시물 번호 수신
             string strNum = Request.QueryString["num"];
@@ -245,6 +264,18 @@ namespace WebApp
             if (pageNum != null)
                 currentPage = int.Parse(pageNum);
 
+            // 검색 키
+            string searchKey = Request.QueryString["searchKey"];
+            string searchObjKey = "BOARD_TITLE";
+            if (searchKey != null)
+                searchObjKey = searchKey;
+
+            // 검색 값
+            string searchValue = Request.QueryString["searchValue"];
+            string searchObjValue = "";
+            if (searchValue != null)
+                searchObjValue = searchValue;
+
 
             MyUtil mu = new MyUtil();
 
@@ -252,8 +283,9 @@ namespace WebApp
             string u_name = mu.getUserName(id);
 
             // 전체 데이터 갯수 구하기
-            int dataCount = mu.getDataCount();
+            int dataCount = mu.getDataCount(searchObjKey, searchObjValue);
 
+            
             // 전체 페이지를 기준으로 총 페이지 수 계산
             int numPerPage = 10;
             int totalPage = mu.getPageCount(numPerPage, dataCount);
@@ -269,7 +301,7 @@ namespace WebApp
 
 
             string listUrl = "BoardList.aspx";
-            string pageIndexList = mu.pageIndexList(currentPage, totalPage, listUrl);
+            string pageIndexList = mu.pageIndexList(currentPage, totalPage, listUrl, searchObjKey, searchObjValue);
 
             //string articleUrl = "BoardDetail.aspx";
 
@@ -282,66 +314,39 @@ namespace WebApp
             // ----------------------------------------------------------------------------------------------------------
 
 
+            
 
             // db연결
 
             // 연결 객체 생성
             SqlConnection conn = null;
-
+            searchObjValue = "%" + searchValue + "%";
             try
             {
-                conn = new SqlConnection(ConfigurationManager.ConnectionStrings["testData"].ToString());
-                /*
-                if (conn != null)
-                    //Response.Write("DB연결 성공~!");
-                else
-                    Response.Write("실패 ㅠㅜ");
-                */
 
+                conn = new SqlConnection(ConfigurationManager.ConnectionStrings["testData"].ToString());
                 // db 오픈
                 conn.Open();
-
-                // SqlCommand 객체 생성
                 SqlCommand sc = new SqlCommand();
-
-                // SqlCommand 객체의 연결은 testData 의 Connection() 을 의미
                 sc.Connection = conn;
-
-                // 해당 id, pwd 조회 ▼
-
-                // 쿼리문 작성
-                //string sql = "SELECT CONVERT(INT, ROW_NUMBER() OVER(ORDER BY BOARD_ID)) AS [ROWNUM], BOARD_ID, BOARD_TITLE, BOARD_HITCOUNT, CONVERT(VARCHAR(8), BOARD_DATE, 112) AS [BOARD_DATE], U_NAME FROM BOARD_LIST_VIEW WHERE DEL_CHECK = 0";
-                string sql = string.Format("SELECT ROWNUM, BOARD_ID, BOARD_TITLE, BOARD_HITCOUNT, BOARD_DATE, U_NAME FROM BOARD_LIST_VIEW2 WHERE ROWNUM >={0} AND ROWNUM <= {1}", start, end);
+                string sql = string.Format(" SELECT BOARD.ROWNUM, BOARD.BOARD_ID, BOARD.BOARD_TITLE, BOARD.BOARD_HITCOUNT, BOARD.BOARD_DATE, BOARD.U_NAME" +
+                                           " FROM" +
+                                           "(" +
+                                           "    SELECT CONVERT(INT, ROW_NUMBER() OVER(ORDER BY BOARD_ID DESC)) AS[ROWNUM], BOARD_ID, BOARD_TITLE, BOARD_HITCOUNT, BOARD_DATE, U_NAME" +
+                                           "    FROM BOARD_LIST_VIEW2" +
+                                           " WHERE {0} LIKE '{1}'" +
+                                           ") [BOARD]" +
+                                           "  WHERE BOARD.ROWNUM >= {2} AND BOARD.ROWNUM <= {3}"                                            
+                                            , searchObjKey, searchObjValue, start, end);
                 sc.CommandText = sql;
-
-                // commandtype 정의
                 sc.CommandType = CommandType.Text;
-
-                // sqlDataAdapter 선언
                 SqlDataAdapter da = new SqlDataAdapter();
-
-                // SqlDataAdapter 객체의 Command 정의
                 da.SelectCommand = sc;
-
-                // 결과 담기 ▼
-
-                // DataSet 생성
                 DataSet ds = new DataSet();
+                da.Fill(ds, "[BOARD]");
 
-                // DataSet 에 테이블 담기
-                da.Fill(ds, "[BOARD_LIST_VIEW2]");
-
-                // DataTable로 가져오기
-                //DataTable dt = new DataTable();
-
-                // DataSet 에 담긴 table 을 dt에 set해줌 === 정의
-                //dt.TableName = ds.DataSetName;
-
-                // List 생성
                 List<BoardDTO> boardList = new List<BoardDTO>();
 
-                // ds 테이블에 담긴 행 추출
-                // 조건문 : 값을 얻어 왔다면 -- DataSet 의 count 가 0보다 크다면
                 if (ds.Tables.Count > 0)
                 {
                     for (int j = 0; j< ds.Tables.Count; j++)
@@ -407,7 +412,7 @@ namespace WebApp
                         tr.Cells.Add(td);
 
                         td = new TableCell();
-                        td.Text = "<a href='BoardDetail.aspx?board_id=" +dto.board_id.ToString()+ "&pageNum=" +currentPage+ "' style='text-decoration: none;'>" + dto.board_title +"</a> ";
+                        td.Text = "<a href='BoardDetail.aspx?board_id=" +dto.board_id.ToString()+ "&pageNum=" +currentPage+"' style='text-decoration: none;'>" + dto.board_title +"</a> ";
                         tr.Cells.Add(td);
 
                         td = new TableCell();
@@ -424,25 +429,13 @@ namespace WebApp
 
                         Board_List.Rows.Add(tr);
                     }
-                    
                 }
                 else
                 {
                     // 값이 없다면 리턴..
                     conn.Close();
                 }
-                
-
-                //Console.WriteLine(result);
-
-                // db 클로즈
                 conn.Close();
-
-                
-                
-
-
-
             }
             catch (Exception ex)
             {
@@ -457,6 +450,12 @@ namespace WebApp
 
             Session["userId"] = id;
             Response.Redirect("BoardInsert.aspx");
+        }
+
+        protected void LogoutBtn_Click(object sender, EventArgs e)
+        {
+            Session.Clear();
+            Response.Redirect("BoardLogin2.aspx");
         }
     }
 }

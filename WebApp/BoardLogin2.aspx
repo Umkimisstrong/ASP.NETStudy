@@ -15,8 +15,9 @@
         }
     .header
     {
+        margin-top:10%;
         display:inline-block;
-        width: 570px;
+        width: 320px;
     }
     .content
     {
@@ -28,14 +29,14 @@
         {
             display:inline-block;
             font-size: 20pt;
-            width: 560px;
+            
             background-color:white;
             border:inset;
         }
 
     .loginConent .loginTable
     {
-        width:550px;
+        
         border: none;
     }
 
@@ -43,19 +44,13 @@
     {
         width: 250px;
         height: 40px;
-        font-size: 18pt;
+        font-size: 14pt;
     }
     .textBox:hover
     {
         background-color: cornflowerblue;
 
     }
-
-    .loginTable th
-    {
-        text-align: right;
-    }
-
     .loginTable td
     {
         text-align: center;
@@ -136,23 +131,18 @@
         <div class="loginContent">
              <table class="loginTable">
                  <tr>
-                     <th>
-                         아이디(이메일)
-                     </th>
                      <td>
                           <input class="textBox" type="text" runat="server" placeholder="yyyyy@aaaaaa.com" id="Id"/>
                      </td>
                  </tr>
                  <tr>
-                     <th>
-                         비밀번호(주민등록번호)
-                     </th>
+                     
                      <td>
                           <input class="textBox" type="password" runat="server" placeholder="xxxxxx-xxxxxxx" id="Pwd"/>
                      </td>
                  </tr>
                  <tr>
-                     <td colspan="2">
+                     <td>
                         <input type="button" class="loginBtn" value="LOGIN" onclick="loginBtns()"/>
                         <asp:Button Text="LOGIN" runat="server" hidden="hidden" ID="loginBtn" onclick="LoginBtn_Click"/>
                      </td>
