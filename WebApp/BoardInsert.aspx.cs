@@ -13,7 +13,7 @@ namespace WebApp
         {
             string id = "";
 
-            if (Page.Session["userId"].ToString() != null)
+            if (Page.Session["userId"] != null)
             {
                 id = Page.Session["userId"].ToString();
 

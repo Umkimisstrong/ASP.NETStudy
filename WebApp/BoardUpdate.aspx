@@ -5,100 +5,137 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
+    <title>Board Update</title>
+<style type="text/css">
+    body{
+        background-color:gray;
+        text-align:center;
+    }
+    .container {
+        max-width:600px;
+        display:inline-block;
+        
+        max-height:1700px;
+    }
+    h1 {
+        color:white;
+    }
+    #PageNum {
+        width:98%;
+        text-align:center;
+        font-weight:bold;
+        color:darkolivegreen;
+        font-size:10pt;
+    }
+        #PageNum:hover {
+            background-color:darksalmon;
+        }
+    #Board_Id {
+        color:darkolivegreen;
+        width:98%;
+        text-align:center;
+        font-weight:bold;
+        font-size:10pt;
+
+    }
+        #Board_Id:hover {
+            background-color:darksalmon;
+        }
+    #Board_Title {
+        color:darkolivegreen;
+        width:98%;
+        text-align:center;
+        font-weight:bold;
+        font-size:10pt;
+    }
+        #Board_Title:hover {
+            background-color:darksalmon;
+        }
+    .updateBoardTable {
+
+    }
+    .updateBoardTable td{
+        background-color:antiquewhite;
+        color:darkolivegreen;
+        font-weight:bold;
+        font-size:10pt;
+    }
+    #InsertBtn {
+        font-weight:bold;
+        color:darkolivegreen;
+
+    }
+        #InsertBtn:hover {
+            color:darksalmon;
+        }
+    #Board_Content {
+        color:darkolivegreen;
+        font-weight:bold;
+        font-size:10pt;
+    }
+        #Board_Content:hover {
+            background-color:darksalmon;
+        }
+</style>
 
 <script type="text/javascript">
-  /*  function checkContents() {
-        //alert("123");
-        var board_title = document.getElementById("board_title").value;
-        var board_content = document.getElementById("board_content").value;
-
-        alert(board_title);
-        alert(board_content);
-        
-        // 입력되었는지, 공백은 아닌지 검사
-        if (board_title.trim() == "")
-        {
-            alert("제목을 입력하세요"); 
-            document.getElementById("board_title").focus();
-            return;
-        }
-
-        if (board_content.trim() == "")
-        {
-            alert("내용을 입력하세요");
-            document.getElementById("board_content").focus();
-            return;
-        }
-
-        alert("게시물을 추가합니다.");
-        document.getElementById("boardInsertForm").submit();
-        // 여기부터 시작
-
-    }*/
 </script>
 </head>
 
 
 <body>
+<div class="container">
+    <h1>
+        Update Board
+    </h1>
+    <hr />
     <form id="boardUpdateForm" runat="server" action="BoardUpdate_ok.aspx" method="post" >
-        <div>
-            <table>
+            <table class="updateBoardTable">
                 <tr>
-                    <td colspan="2">
-                        [페 이 지]
+                    <td>
+                        페 이 지
                     </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
+                    <td>
                         <asp:TextBox ID="PageNum" runat="server" ReadOnly="true"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2">
-                        [번 호]
+                    <td>
+                        번 호
                     </td>
-                </tr>
-                <tr>
                     <td>
                         <asp:TextBox ID="Board_Id" runat="server" ReadOnly="true"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2">
-                        [제 목]
+                    <td>
+                        제 목
+                    </td>
+                    <td>
+                        <asp:TextBox ID="Board_Title" runat="server" ></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <%--<input type="text" id="board_title" name="board_title" style="width:300px;" />--%>
-                        <asp:TextBox ID="Board_Title" runat="server" Width="300px" ></asp:TextBox>
+                        내 용
                     </td>
-                    <td style="text-align:right;">
-                         <%--<input type="button" value="수정하기" style="width:100px;" id="insertBtn" onclick="checkContents()"/>--%>
-                        <asp:Button Width="100px" ID="InsertBtn" OnClick="InsertBtn_Click" runat="server" Text="수정하기" />
-                    </td>
-                </tr>
-                <tr>
                     <td>
-                        [내 용]
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <%--<textarea style="width:500px; position:absolute;" rows="30" placeholder="내용을 입력하세요" id="board_content" name="board_content">
-                            
-                        </textarea>--%>
                         <asp:TextBox ID="Board_Content" TextMode="MultiLine" Rows="30" Columns="55" runat="server"></asp:TextBox>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+
+                    </td>
+                    <td>
+                        <asp:Button Width="100px" ID="InsertBtn" OnClick="InsertBtn_Click" runat="server" Text="수정하기" />
                     </td>
                 </tr>
             </table>
             <%--<asp:Button runat="server" Text="돌아가기" ID="Back_Detail" OnClick="Back_Detail_Click" UseSubmitBehavior="false"/>--%>
-
-        </div>
-        
-
     </form>
+</div>
 
 </body>
 </html>

@@ -6,6 +6,33 @@
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
+<style type="text/css">
+    body {
+        text-align:center;
+        background-color:gray;
+    }
+    .container {
+        max-width:600px;
+        display:inline-block;
+    }
+    h1 {
+        color:white;
+    }
+    #Reply_Content {
+        color:darkolivegreen;
+        font-weight:bold;
+    }
+        #Reply_Content:hover {
+            background-color:beige;
+        }
+    #insertBtn {
+        color:darkolivegreen;
+        font-weight:bold;
+    }
+        #insertBtn:hover {
+            color:darksalmon;
+        }
+</style>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
@@ -38,14 +65,15 @@
 </head>
 
 <body>
+<div class="container">
+    <h1>
+        Reply on Board 
+    </h1>
+    <hr />
+
     <form id="Board_Reply" runat="server">
-        <div>
             <table>
-                <tr>
-                    <td colspan="2">
-                        [댓 글 작 성]
-                    </td>
-                </tr>
+                       
                 <tr>
                     <td>
                         <%--<input type="text" id="reply_content" name="reply_content" style="width:300px;" />--%>
@@ -53,13 +81,13 @@
                     </td>
                     <td style="text-align:right;">
                          <%--<input type="button" value="댓글작성" style="width:100px;" onclick="checkContents()"/>--%>
-                        <asp:button ID="insertBtn" Text="댓글작성" runat="server" OnClick="insertBtn_Click"/>
+                        <asp:button ID="insertBtn" Text="댓글작성" runat="server" OnClick="insertBtn_Click" />
                          
 
                     </td>
                 </tr>
             </table>
-        </div>
     </form>
+</div>
 </body>
 </html>

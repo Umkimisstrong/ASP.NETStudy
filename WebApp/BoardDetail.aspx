@@ -10,13 +10,14 @@
 <style type="text/css">
     body
         {
-            background-color: white;
+            background-color: gray;
             text-align:center;
         }
     .header
     {
         display:inline-block;
         width: 650px;
+        color:white;
     }
 
     .content
@@ -28,14 +29,64 @@
     {
         display:inline-block;
     }
+    a
+        {
+            color:darkolivegreen;
+            font-weight:bold;
+        }
+        a:hover
+        {
+            color:darksalmon;
+        }
+
+        td {
+            color:darkgoldenrod;
+            font-weight:bold;
+        }
+
+    .container {
+        display:inline-block;
+        width:600px;
+    }
+
+    #Back {
+        color:darkolivegreen;
+        font-weight:bold;
+    }
+        #Back:hover {
+            color:darksalmon;
+        }
+    #Reply {
+        color:darkolivegreen;
+        font-weight:bold;
+    }
+        #Reply:hover {
+            color:darksalmon;
+        }
+    #Delete {
+        color:darkolivegreen;
+        font-weight:bold;
+    }
+        #Delete:hover {
+            color:darksalmon;
+        }
+    #Update {
+        color:darkolivegreen;
+        font-weight:bold;
+    }
+        #Update:hover {
+            color:darksalmon;
+        }
 </style>
 
 </head>
 <body>
+
+<div class="container">
     
 <div class="header">
     <h1>
-        회원 게시판
+        Member Board
     </h1>
     <hr />
 </div>
@@ -60,7 +111,7 @@
         <br />
         
     
-        <h2>댓 글</h2>
+        <h2>Replies</h2>
         <asp:Table ID="Board_Reply" runat="server" BorderStyle="Ridge" BorderWidth="2px" CellSpacing="1" BackColor="Window" CellPadding="6" Width="600px">
         </asp:Table>
         <asp:Button ID="Back" Text="돌아가기" OnClick="Back_Click" runat="server"/>
@@ -78,6 +129,6 @@
 <div class="footer">
    
 </div>
-
+</div>
 </body>
 </html>

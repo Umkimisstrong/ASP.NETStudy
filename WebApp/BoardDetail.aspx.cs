@@ -164,9 +164,10 @@ namespace WebApp
                         td.Text = "[ " + dto.board_hitCount.ToString() + " ]";
                         tr.Cells.Add(td);
 
-                        tr.BackColor = Color.FromName("#ccccff");
+                        tr.BackColor = Color.AntiqueWhite;
 
                         textarea.Text = dto.board_content;
+                        textarea.ForeColor = Color.DarkKhaki;
                         
                         Board_Detail.Rows.Add(tr);
 

@@ -13,8 +13,11 @@ namespace WebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Session["userid"] = Page.Session["userid"].ToString();
+            
+            if (Page.Session["userid"] == null)
+                Response.Redirect("BoardLogin2.aspx");
 
+            Session["userid"] = Page.Session["userid"].ToString();
             string board_id = Request.Form["board_id"].ToString();
             string board_title = Request.Form["board_title"].ToString();
             string board_content = Request.Form["board_content"].ToString();
