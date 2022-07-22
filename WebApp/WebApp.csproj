@@ -67,6 +67,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="BoardAnswerDelete.aspx" />
+    <Content Include="BoardAnswerInsert.aspx" />
     <Content Include="BoardDelete.aspx" />
     <Content Include="BoardDetail.aspx" />
     <Content Include="BoardInsert.aspx" />
@@ -81,6 +83,20 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoardAnswerDelete.aspx.cs">
+      <DependentUpon>BoardAnswerDelete.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardAnswerDelete.aspx.designer.cs">
+      <DependentUpon>BoardAnswerDelete.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BoardAnswerInsert.aspx.cs">
+      <DependentUpon>BoardAnswerInsert.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BoardAnswerInsert.aspx.designer.cs">
+      <DependentUpon>BoardAnswerInsert.aspx</DependentUpon>
+    </Compile>
     <Compile Include="BoardDelete.aspx.cs">
       <DependentUpon>BoardDelete.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

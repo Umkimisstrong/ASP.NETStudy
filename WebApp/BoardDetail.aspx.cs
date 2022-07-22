@@ -37,10 +37,15 @@ namespace WebApp
         public int reply_number { get; set; }
         public string reply_user { get; set; }
 
+        public int answer_id { get; set; }
+        public string answer_content { get; set; }
+        
+
     }
 
     public class BoardAnswerDTO 
     {
+
         public int rownum { get; set; }
         public int answer_id { get; set; }
         public string answer_content { get; set; }
@@ -48,6 +53,8 @@ namespace WebApp
         public int reply_id { get; set; }
         public int board_id { get; set; }
         public string u_name { get; set; }
+
+        public string u_id { get; set; }
     
     }
 
@@ -70,10 +77,13 @@ namespace WebApp
 
             try
             {
+                string pageNum = Request.QueryString["pageNum"].ToString();
+                PageNum.Value = pageNum;
+                
                 conn = new SqlConnection(ConfigurationManager.ConnectionStrings["testData"].ToString());
 
                 conn.Open();
-
+                
                 // SqlCommand 객체 생성
                 SqlCommand sc = new SqlCommand();
 
@@ -108,10 +118,11 @@ namespace WebApp
                             dto.u_name = (string)row["U_NAME"];
 
                             boardList.Add(dto);
-                            Board_Id.Text = dto.board_id.ToString();
+                            Board_Id.Value = dto.board_id.ToString();
 
                         }
                     }
+
                     TableRow tr;
                     TableCell td;
 
@@ -247,18 +258,34 @@ namespace WebApp
                          
                             td = new TableCell();
                             td.Text = dto.reply_number.ToString();
+                            td.Style.Add("width", "10%");
+                            td.Style.Add("text-align", "center");
                             tr.Cells.Add(td);
+                            
 
                             td = new TableCell();
                             td.Text = dto.reply_content;
+                            td.Style.Add("width", "60%");
+                            td.Style.Add("text-align", "center");
                             tr.Cells.Add(td);
 
                             td = new TableCell();
                             td.Text = dto.reply_user;
+                            td.Style.Add("width", "10%");
+                            td.Style.Add("text-align", "right");
                             tr.Cells.Add(td);
 
                             td = new TableCell();
                             td.Text = dto.reply_date;
+                            td.Style.Add("width", "10%");
+                            td.Style.Add("text-align", "right");
+                            tr.Cells.Add(td);
+
+                            td = new TableCell();
+
+                            td.Text = "<button type='button' onclick='answer("+dto.reply_id.ToString()+")' >답변하기</button>";
+                            td.Style.Add("width", "10%");
+                            td.Style.Add("text-align", "right");
                             tr.Cells.Add(td);
 
                             tr.BackColor = Color.FromName("#a9f5f2s");
@@ -294,21 +321,52 @@ namespace WebApp
                                 foreach (BoardAnswerDTO aDto in answerList)
                                 {
                                     tr = new TableRow();
+
                                     td = new TableCell();
-                                    td.Text = "└▶ (" + aDto.rownum.ToString() +" )";
+                                    td.Text = "└▶ ";
+                                    td.Style.Add("text-align", "right");
+                                    td.Style.Add("font-size", "10pt");
+                                    td.ForeColor = Color.Orange;
+                                    
                                     tr.Cells.Add(td);
+
 
                                     td = new TableCell();
                                     td.Text = aDto.answer_content;
+                                    td.Style.Add("text-align", "center");
+                                    td.Style.Add("font-size", "10pt");
+                                    td.ForeColor = Color.Orange;
                                     tr.Cells.Add(td);
+
+                                    
 
                                     td = new TableCell();
                                     td.Text = aDto.u_name;
+                                    td.Style.Add("text-align", "right");
+                                    td.Style.Add("font-size", "10pt");
+                                    td.ForeColor = Color.Orange;
                                     tr.Cells.Add(td);
 
                                     td = new TableCell();
                                     td.Text = aDto.answer_date;
+                                    td.Style.Add("text-align", "right");
+                                    td.Style.Add("font-size", "10pt");
+                                    td.ForeColor = Color.Orange;
                                     tr.Cells.Add(td);
+                                    
+                                    //답변한 사람이 로그인한 사용자라면
+                                    if (id == aDto.u_id)
+                                    {
+                                        td = new TableCell();
+                                        td.Text = "<button type='button' onclick='deleteAnswer(" + aDto.answer_id.ToString() + ")' style='color:red;'>답변삭제</button>";
+
+                                        td.Style.Add("text-align", "right");
+                                        tr.Cells.Add(td);
+                                    }
+
+                                    tr.BackColor = Color.FromName("#a9f5f2s");
+
+
 
                                     Board_Reply.Rows.Add(tr);
 
@@ -367,7 +425,7 @@ namespace WebApp
                                           " CONVERT(INT, ROW_NUMBER() OVER(ORDER BY ANSWER_ID))AS [ROWNUM]" +
                                           ", ANSWER_ID, ANSWER_CONTENT" +
                                           ", CONVERT(VARCHAR(8), ANSWER_DATE, 112) AS [ANSWER_DATE]" +
-                                          ", REPLY_ID, U_NAME, BOARD_ID" +
+                                          ", REPLY_ID, U_ID, U_NAME, BOARD_ID" +
                                           " FROM REPLY_ANSWER_VIEW" +
                                           " WHERE BOARD_ID={0} AND REPLY_ID = {1}", board_id, reply_id);
                 SqlCommand sc = new SqlCommand();
@@ -389,6 +447,7 @@ namespace WebApp
                         dto.answer_content = (string)row["ANSWER_CONTENT"];
                         dto.answer_date = (string)row["ANSWER_DATE"];
                         dto.reply_id = (int)row["REPLY_ID"];
+                        dto.u_id = (string)row["U_ID"];
                         dto.u_name = (string)row["U_NAME"];
                         dto.board_id = (int)row["BOARD_ID"];
 
@@ -447,6 +506,9 @@ namespace WebApp
 
         }
 
+
+
+
         // 돌아가기
         protected void Back_Click(object sender, EventArgs e)
         {
@@ -459,7 +521,7 @@ namespace WebApp
         protected void Reply_Click(object sender, EventArgs e)
         {
             // board_id 가져오기
-            string board_id = Board_Id.Text;
+            string board_id = Board_Id.Value;
             string pageNum = Request.QueryString["pageNum"].ToString();
             // board_id를 url 에 포함
             string url = "BoardReplyInsert.aspx?board_id=" + board_id +"&pageNum="+pageNum;
@@ -483,7 +545,7 @@ namespace WebApp
         protected string confirmMsg()
         {
             string result = "";
-            string board_id = Board_Id.Text;
+            string board_id = Board_Id.Value;
             result += "<script type='text/javascript'>" +
                       "var deleteFlag = confirm('해당 게시물을 정말 삭제하시겠습니까??');" +
                       "if(deleteFlag == true)" +
@@ -507,7 +569,7 @@ namespace WebApp
         {
             string url = "";
             // 수정을 하기 위한 데이터 : 게시물id, 게시물 제목, 게시물 내용
-            string board_id = Board_Id.Text;
+            string board_id = Board_Id.Value;
             string pageNum = Request.QueryString["pageNum"].ToString();
             // 세션 유지를 위한 데이터
             Session["userid"] = Page.Session["userid"].ToString();
