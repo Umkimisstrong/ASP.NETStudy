@@ -55,7 +55,7 @@ namespace WebApp
                 conn.Open();
 
                 // 쿼리문 준비
-                string sql = string.Format("INSERT INTO TB_ANSWER(ANSWER_ID, ANSWER_CONTENT, BOARD_ID, REPLY_ID, U_ID) VALUES( (SELECT COUNT(*)+1 AS [COUNT] FROM TB_ANSWER), '{0}', {1}, {2}, '{3}' )"
+                string sql = string.Format("INSERT INTO TB_ANSWER(ANSWER_ID, ANSWER_CONTENT, BOARD_ID, REPLY_ID, U_ID) VALUES( (NEXT VALUE FOR ANSWER_SEQ), '{0}', {1}, {2}, '{3}' )"
                                           , answer_content
                                           , board_id
                                           , reply_id

@@ -93,7 +93,7 @@ namespace WebApp
 
                 // 쿼리문 준비
                 string sql = string.Format("INSERT INTO TB_REPLY(REPLY_ID, REPLY_CONTENT, U_ID, BOARD_ID)" +
-                                          " VALUES ( (SELECT COUNT(*) + 1 AS [COUNT] FROM TB_REPLY)" +
+                                          " VALUES ( (NEXT VALUE FOR REPLY_SEQ)" +
                                           ", '{0}'" +
                                           ", '{1}'" +
                                           ", {2})"
