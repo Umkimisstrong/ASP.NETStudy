@@ -84,3 +84,11 @@ C:\ASP.NETStudy\ASP.NETStudy\MVCLayoutTest\obj\Debug\MVCLayoutTest.csproj.CoreCo
 C:\ASP.NETStudy\ASP.NETStudy\MVCLayoutTest\obj\Debug\MVCLayoutTest.csproj.CopyComplete
 C:\ASP.NETStudy\ASP.NETStudy\MVCLayoutTest\obj\Debug\MVCLayoutTest.dll
 C:\ASP.NETStudy\ASP.NETStudy\MVCLayoutTest\obj\Debug\MVCLayoutTest.pdb
+C:\ASP.NETStudy\ASP.NETStudy\MVCLayoutTest\bin\System.Runtime.CompilerServices.Unsafe.dll
+C:\ASP.NETStudy\ASP.NETStudy\MVCLayoutTest\bin\Unity.Abstractions.dll
+C:\ASP.NETStudy\ASP.NETStudy\MVCLayoutTest\bin\Unity.Container.dll
+C:\ASP.NETStudy\ASP.NETStudy\MVCLayoutTest\bin\Unity.Mvc5.dll
+C:\ASP.NETStudy\ASP.NETStudy\MVCLayoutTest\bin\System.Threading.Tasks.Extensions.dll
+C:\ASP.NETStudy\ASP.NETStudy\MVCLayoutTest\bin\System.Runtime.CompilerServices.Unsafe.xml
+C:\ASP.NETStudy\ASP.NETStudy\MVCLayoutTest\bin\Unity.Abstractions.pdb
+C:\ASP.NETStudy\ASP.NETStudy\MVCLayoutTest\bin\Unity.Container.pdb
