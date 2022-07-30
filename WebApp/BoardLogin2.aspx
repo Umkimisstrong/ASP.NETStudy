@@ -10,14 +10,16 @@
 
     body
         {
-            background-color: white;
+            background-color: gray;
             text-align:center;
+
         }
     .header
     {
         margin-top:10%;
         display:inline-block;
         width: 320px;
+        color:white;
     }
     .content
     {
@@ -28,15 +30,15 @@
         .content .loginContent
         {
             display:inline-block;
-            font-size: 20pt;
+            font-size: 15pt;
             
-            background-color:white;
+            background-color:antiquewhite;
             border:inset;
         }
 
     .loginConent .loginTable
     {
-        
+        background-color:antiquewhite;
         border: none;
     }
 
@@ -44,15 +46,18 @@
     {
         width: 250px;
         height: 40px;
-        font-size: 14pt;
+        font-size: 12pt;
+        background-color:antiquewhite;
+        border:1px solid gray;
+        color:gray;
     }
     .textBox:hover
     {
-        background-color: cornflowerblue;
-
+        background-color:darksalmon;
     }
     .loginTable td
     {
+        background-color:antiquewhite;
         text-align: center;
     }
 
@@ -62,17 +67,18 @@
         height:40px;
         border:none;
         background-color: dodgerblue;
+        color:gray;
         
     }
         .loginBtn:hover
         {
-            background-color:blue;
+            background-color:darksalmon;
             color:whitesmoke;
         }
         .loginBtn:active
         {
-            background-color:yellow;
-            color:black;
+            background-color:beige;
+            
         }
 </style>
 
@@ -120,7 +126,7 @@
 <body>
 <div class="header">
     <h1>
-        회원 로그인
+        Login
     </h1>
     <hr />
 </div>

@@ -57,7 +57,7 @@ namespace WebApp
 
                 conn.Open();
                 // 4. 쿼리문 준비
-                string sql = string.Format("INSERT INTO TB_BOARD(BOARD_ID, BOARD_TITLE, BOARD_CONTENT, U_ID) VALUES( (SELECT COUNT(*) + 1 AS [COUNT] FROM TB_BOARD), '{0}', '{1}', '{2}')", dto.board_title, dto.board_content, dto.u_id);
+                string sql = string.Format("INSERT INTO TB_BOARD(BOARD_ID, BOARD_TITLE, BOARD_CONTENT, U_ID) VALUES( (NEXT VALUE FOR BOARD_SEQ), '{0}', '{1}', '{2}')", dto.board_title, dto.board_content, dto.u_id);
 
                 // 5. 쿼리 실행
 

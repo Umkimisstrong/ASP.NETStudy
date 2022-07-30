@@ -70,6 +70,7 @@ namespace WebApp
             return result;
         }
 
+        // 전체 데이터 갯수를(검색값에따라) 반환하는 메소드
         public int getDataCount(string searchKey, string searchValue)
         {
 
@@ -379,7 +380,7 @@ namespace WebApp
                     td = new TableCell();
                     td.Text = "♥환영합니다 " +  u_name + " 님의 게시판입니다♥";
                     tr.Cells.Add(td);
-                    tr.BackColor = Color.FromName("#ccccff");
+                    tr.BackColor = Color.AntiqueWhite;
                     SubTitle.Rows.Add(tr);
 
 
@@ -396,7 +397,7 @@ namespace WebApp
                     }
 
                     // 테이블 첫줄의 색깔 지정
-                    tr.BackColor = Color.FromName("#ccccff");
+                    tr.BackColor = Color.AntiqueWhite;
 
                     // asp 컨트롤 Board_List 의 행에 만든 tr 을 추가한다.
                     Board_List.Rows.Add(tr);

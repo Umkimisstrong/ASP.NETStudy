@@ -63,14 +63,72 @@
 */  
         body
         {
-            background-color: white;
+            background-color: gray;
             text-align:center;
         }
     .header
     {
+        color:white;
         display:inline-block;
         width: 500px;
     }
+
+        a
+        {
+            color:darkolivegreen;
+            font-weight:bold;
+        }
+        a:hover
+        {
+            color:darksalmon;
+        }
+
+        td {
+            color:darkolivegreen;
+            font-weight:bold;
+        }
+        #searchKey {
+            color:darkolivegreen;
+            font-weight:bold;
+            height:22px;
+        }
+            #searchKey:hover {
+                color:darksalmon;
+            }
+        #searchValue {
+            height:17px;
+            color:darkcyan;
+            font-weight:bold;
+        }
+        #searchValue:hover {
+            background-color:darksalmon;
+        }
+        #searchBtn {
+            height:25px;
+            color:darkolivegreen;
+            font-weight:bold;
+
+        }
+        #searchBtn:hover {
+            height:25px;
+            color:darksalmon;
+            
+        }
+        #AddBtn {
+            font-weight:bold;
+            color:darkolivegreen;
+        }
+        #AddBtn:hover {
+            color:darksalmon;
+        }
+        #LogoutBtn {
+            font-weight:bold;
+            color:darkolivegreen;
+        }
+        }
+        #LogoutBtn:hover {
+            color:darksalmon;
+        }
     </style>
 
 <%-- 스크립트 단 --%>
@@ -95,7 +153,7 @@
 
 <div class="header">
     <h1>
-        회원 게시판
+        Member Board
     </h1>
     <hr />
 </div>
@@ -136,7 +194,7 @@
         </div>
 
         <%-- 페이징 --%>    
-        <asp:Label ID="PageIndex" runat="server" Font-Size="16pt"></asp:Label>
+        <asp:Label ID="PageIndex" runat="server" Font-Size="16pt" ForeColor="White"></asp:Label>
 
         
     </div>

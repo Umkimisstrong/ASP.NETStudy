@@ -5,7 +5,66 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
+    <title>Board Insert</title>
+
+<style type="text/css">
+
+    body {
+        text-align:center;
+        background-color:gray;
+    }
+    .container {
+        display:inline-block;
+        max-width:600px;
+        max-height:1700px;
+        text-align:center;
+    }
+    .header {
+        width:500px;
+        color:white;
+        display:inline-block;
+    }
+    .content {
+        display:inline-block;
+    }
+
+    .boardInsertTable {
+        border:none;
+    }
+    .boardInsertTable td{
+        background-color:antiquewhite;
+        color:darkolivegreen;
+    }
+    #board_title {
+        width:97%;
+        height:97%;
+        font-weight:bold;
+        color:darkolivegreen;
+    }
+        #board_title:hover {
+            color:darksalmon;
+            background-color:beige;
+            border:0.5px solid gray;
+        }
+    #board_content {
+        font-weight:bold;
+        color:darkolivegreen;
+    }
+        #board_content:hover {
+            color:darksalmon;
+            background-color:beige;
+            border:0.5px solid gray;
+
+        }
+
+    #insertBtn {
+        font-weight:bold;
+        color:darkolivegreen;
+    }
+        #insertBtn:hover {
+            color:darksalmon;
+        }
+</style>
 
 <script type="text/javascript">
     function checkContents() {
@@ -41,38 +100,50 @@
 
 
 <body>
-    <form id="boardInsertForm" action="BoardInsert_ok.aspx" runat="server" name="boardInsertForm" method="post">
-        <div>
-            <table>
-                <tr>
-                    <td colspan="2">
-                        [제 목]
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="text" id="board_title" name="board_title" style="width:300px;" />
-                    </td>
-                    <td style="text-align:right;">
-                         <input type="button" value="글쓰기" style="width:100px;" id="insertBtn" onclick="checkContents()"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        [내 용]
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <textarea style="width:500px; position:absolute;" rows="30" placeholder="내용을 입력하세요" id="board_content" name="board_content">
+<div class="container">
 
-                        </textarea>
-                    </td>
-                </tr>
-            </table>
+    
+    <div class="header">
+        <h1>
+            Create Board 
+        </h1>
+    </div>
+    <div class="content">
 
+    
+            <form id="boardInsertForm" action="BoardInsert_ok.aspx" runat="server" name="boardInsertForm" method="post">
+                
+                    <table class="boardInsertTable">
+                        <tr>
+                            <td>
+                                제 목 
+                            </td>
+                            <td>
+                                <input type="text" id="board_title" name="board_title" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                내 용 
+                            </td>
+                            <td>
+                                <textarea cols="39" rows="25" placeholder="내용을 입력하세요" id="board_content" name="board_content">
 
+                                </textarea>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td style="text-align:right;">
+                            </td>
+                            <td>
+                                 <input type="button" value="글쓰기" style="width:100px;" id="insertBtn" onclick="checkContents()"/>
+                            </td>
+                        </tr>
+                    </table>
+                
+            </form>
         </div>
-    </form>
+</div>
 </body>
 </html>

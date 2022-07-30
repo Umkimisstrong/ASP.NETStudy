@@ -37,6 +37,25 @@ namespace WebApp
         public int reply_number { get; set; }
         public string reply_user { get; set; }
 
+        public int answer_id { get; set; }
+        public string answer_content { get; set; }
+        
+
+    }
+
+    public class BoardAnswerDTO 
+    {
+
+        public int rownum { get; set; }
+        public int answer_id { get; set; }
+        public string answer_content { get; set; }
+        public string answer_date { get; set; }
+        public int reply_id { get; set; }
+        public int board_id { get; set; }
+        public string u_name { get; set; }
+
+        public string u_id { get; set; }
+    
     }
 
     public partial class BoardDetail : System.Web.UI.Page
@@ -58,10 +77,13 @@ namespace WebApp
 
             try
             {
+                string pageNum = Request.QueryString["pageNum"].ToString();
+                PageNum.Value = pageNum;
+                
                 conn = new SqlConnection(ConfigurationManager.ConnectionStrings["testData"].ToString());
 
                 conn.Open();
-
+                
                 // SqlCommand 객체 생성
                 SqlCommand sc = new SqlCommand();
 
@@ -70,38 +92,13 @@ namespace WebApp
 
                 // 쿼리문 작성
                 string sql = string.Format("SELECT ROWNUM, BOARD_ID, BOARD_TITLE, BOARD_HITCOUNT, CONVERT(VARCHAR(8), BOARD_DATE, 112) AS [BOARD_DATE], BOARD_CONTENT, U_ID, U_NAME FROM BOARD_DETAIL_VIEW2 WHERE BOARD_ID = {0}", board_id);
-
-                // sql 실행
                 sc.CommandText = sql;
-
-                // commandtype 정의
                 sc.CommandType = CommandType.Text;
-
-                // sqlDataAdapter 선언
                 SqlDataAdapter da = new SqlDataAdapter();
-
-                // SqlDataAdapter 객체의 Command 정의
                 da.SelectCommand = sc;
-
-                // 결과 담기 ▼
-
-                // DataSet 생성
                 DataSet ds = new DataSet();
-
-                // DataSet 에 테이블 담기
                 da.Fill(ds, "[BOARD_DETAIL_VIEW2]");
-
-                // DataTable로 가져오기
-                //DataTable dt = new DataTable();
-
-                // DataSet 에 담긴 table 을 dt에 set해줌 === 정의
-                //dt.TableName = ds.DataSetName;
-
-                // List 생성
                 List<BoardDTO> boardList = new List<BoardDTO>();
-
-                // ds 테이블에 담긴 행 추출
-                // 조건문 : 값을 얻어 왔다면 -- DataSet 의 count 가 0보다 크다면
                 if (ds.Tables.Count > 0)
                 {
                     for (int j = 0; j < ds.Tables.Count; j++)
@@ -109,7 +106,6 @@ namespace WebApp
                         foreach (DataRow row in ds.Tables[j].Rows)
                         {
                             BoardDTO dto = new BoardDTO();
-
 
                             dto.rowNum = (int)row["ROWNUM"];
 
@@ -122,21 +118,14 @@ namespace WebApp
                             dto.u_name = (string)row["U_NAME"];
 
                             boardList.Add(dto);
-                            Board_Id.Text = dto.board_id.ToString();
+                            Board_Id.Value = dto.board_id.ToString();
 
                         }
                     }
 
-
-
-
-
-                    // 테이블의 첫줄
-                    // <%-- 번호 / 제목(댓글) / 작성자 / 작성일 / 조회수 --%>
                     TableRow tr;
                     TableCell td;
 
-                    // 추출한 boardList 의 데이터 만큼 테이블의 개체로 담아주기
                     foreach (BoardDTO dto in boardList)
                     {
                         tr = new TableRow();
@@ -164,14 +153,13 @@ namespace WebApp
                         td.Text = "[ " + dto.board_hitCount.ToString() + " ]";
                         tr.Cells.Add(td);
 
-                        tr.BackColor = Color.FromName("#ccccff");
+                        tr.BackColor = Color.AntiqueWhite;
 
                         textarea.Text = dto.board_content;
+                        textarea.ForeColor = Color.DarkKhaki;
                         
                         Board_Detail.Rows.Add(tr);
 
-                        // session Id 와 게시물작성자 id 와 동일하다면 
-                        // 삭제버튼과 수정버튼의 Visible 속성을 true 로 변경
                         if (id == dto.u_id)
                         {
                             Delete.Visible = true;
@@ -179,7 +167,6 @@ namespace WebApp
                         }
 
                     }
-
 
 
                 }
@@ -268,26 +255,123 @@ namespace WebApp
                         {
                             tr = new TableRow();
 
+                         
                             td = new TableCell();
                             td.Text = dto.reply_number.ToString();
+                            td.Style.Add("width", "10%");
+                            td.Style.Add("text-align", "center");
                             tr.Cells.Add(td);
+                            
 
                             td = new TableCell();
                             td.Text = dto.reply_content;
+                            td.Style.Add("width", "60%");
+                            td.Style.Add("text-align", "center");
                             tr.Cells.Add(td);
 
                             td = new TableCell();
                             td.Text = dto.reply_user;
+                            td.Style.Add("width", "10%");
+                            td.Style.Add("text-align", "right");
                             tr.Cells.Add(td);
 
                             td = new TableCell();
                             td.Text = dto.reply_date;
+                            td.Style.Add("width", "10%");
+                            td.Style.Add("text-align", "right");
+                            tr.Cells.Add(td);
+
+                            td = new TableCell();
+
+                            td.Text = "<button type='button' onclick='answer("+dto.reply_id.ToString()+")' >답변하기</button>";
+                            td.Style.Add("width", "10%");
+                            td.Style.Add("text-align", "right");
                             tr.Cells.Add(td);
 
                             tr.BackColor = Color.FromName("#a9f5f2s");
 
                             Board_Reply.Rows.Add(tr);
 
+                            /*
+                             1. BOARD_ID 와 REPLY_ID 를 받아온다.
+                             2. 받은 REPLY_ID 를 매개변수로, 해당 REPLY_ID 에 대한 ANSWER 의 COUNT()를 구한다.
+                             3. COUNT > 0인경우 -> 답변이 존재한다는 것이기 때문에
+                                댓글 Tr 과 td 를 생성한 이후 즉,
+
+                               [ 1.   123      김상기     20220621 ]    -- 댓글
+
+
+                               [└>   ㅋㅋㅋㅋ 김효섭     20220622 ]    -- 답변1
+                               [└>   ???????? 김효섭     20220622 ]    -- 답변2
+
+
+                            */
+                            // REPLY_ID 받기
+                            int reply_id = dto.reply_id;
+                            int board_Id = int.Parse(board_id);
+                            int answerCount = AnswerCount(reply_id, board_Id);
+                            
+                            // 해당 댓글에 답변이 조재한다면
+                            if (answerCount > 0)
+                            {
+                                // 답변객체들을 담고
+                                List<BoardAnswerDTO> answerList = AnswerList(reply_id, board_Id);
+
+                                // 답변객체들에서 필요한 값들을 뽑아낸다.
+                                foreach (BoardAnswerDTO aDto in answerList)
+                                {
+                                    tr = new TableRow();
+
+                                    td = new TableCell();
+                                    td.Text = "└▶ ";
+                                    td.Style.Add("text-align", "right");
+                                    td.Style.Add("font-size", "10pt");
+                                    td.ForeColor = Color.Orange;
+                                    
+                                    tr.Cells.Add(td);
+
+
+                                    td = new TableCell();
+                                    td.Text = aDto.answer_content;
+                                    td.Style.Add("text-align", "center");
+                                    td.Style.Add("font-size", "10pt");
+                                    td.ForeColor = Color.Orange;
+                                    tr.Cells.Add(td);
+
+                                    
+
+                                    td = new TableCell();
+                                    td.Text = aDto.u_name;
+                                    td.Style.Add("text-align", "right");
+                                    td.Style.Add("font-size", "10pt");
+                                    td.ForeColor = Color.Orange;
+                                    tr.Cells.Add(td);
+
+                                    td = new TableCell();
+                                    td.Text = aDto.answer_date;
+                                    td.Style.Add("text-align", "right");
+                                    td.Style.Add("font-size", "10pt");
+                                    td.ForeColor = Color.Orange;
+                                    tr.Cells.Add(td);
+                                    
+                                    //답변한 사람이 로그인한 사용자라면
+                                    if (id == aDto.u_id)
+                                    {
+                                        td = new TableCell();
+                                        td.Text = "<button type='button' onclick='deleteAnswer(" + aDto.answer_id.ToString() + ")' style='color:red;'>답변삭제</button>";
+
+                                        td.Style.Add("text-align", "right");
+                                        tr.Cells.Add(td);
+                                    }
+
+                                    tr.BackColor = Color.FromName("#a9f5f2s");
+
+
+
+                                    Board_Reply.Rows.Add(tr);
+
+                                }
+                            }
                         }
                     }
                     else
@@ -322,6 +406,109 @@ namespace WebApp
 
         }
 
+
+
+
+
+        // 특정 댓글에 대한 답변 조회
+        public List<BoardAnswerDTO> AnswerList(int reply_id, int board_id)
+        {
+            List<BoardAnswerDTO> result = new List<BoardAnswerDTO>() ;
+
+            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["testData"].ToString());
+
+
+            try 
+            {
+                conn.Open();
+                string sql = string.Format("SELECT" +
+                                          " CONVERT(INT, ROW_NUMBER() OVER(ORDER BY ANSWER_ID))AS [ROWNUM]" +
+                                          ", ANSWER_ID, ANSWER_CONTENT" +
+                                          ", CONVERT(VARCHAR(8), ANSWER_DATE, 112) AS [ANSWER_DATE]" +
+                                          ", REPLY_ID, U_ID, U_NAME, BOARD_ID" +
+                                          " FROM REPLY_ANSWER_VIEW" +
+                                          " WHERE BOARD_ID={0} AND REPLY_ID = {1}", board_id, reply_id);
+                SqlCommand sc = new SqlCommand();
+                sc.Connection = conn;
+                sc.CommandText = sql;
+                sc.CommandType = CommandType.Text;
+                SqlDataAdapter sa = new SqlDataAdapter();
+                sa.SelectCommand = sc;
+                DataSet ds = new DataSet();
+                sa.Fill(ds, "[REPLY_ANSWER_VIEW]");
+
+                for (int i = 0; i < ds.Tables.Count; i++)
+                {
+                    foreach (DataRow row in ds.Tables[i].Rows)
+                    {
+                        BoardAnswerDTO dto = new BoardAnswerDTO();
+                        dto.rownum = (int)row["ROWNUM"];
+                        dto.answer_id = (int)row["ANSWER_ID"];
+                        dto.answer_content = (string)row["ANSWER_CONTENT"];
+                        dto.answer_date = (string)row["ANSWER_DATE"];
+                        dto.reply_id = (int)row["REPLY_ID"];
+                        dto.u_id = (string)row["U_ID"];
+                        dto.u_name = (string)row["U_NAME"];
+                        dto.board_id = (int)row["BOARD_ID"];
+
+                        result.Add(dto);
+                    }
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+
+
+            return result;
+        }
+
+
+        // 특정 게시물 - 특정 댓글 - 답변 갯수 조회
+        public int AnswerCount(int reply_id, int board_id)
+        {
+            int count = 0;
+
+            SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["testData"].ToString());
+            try
+            {
+                conn.Open();
+                string sql = string.Format("SELECT COUNT(*) AS [COUNT] FROM REPLY_ANSWER_VIEW WHERE BOARD_ID = {0} AND REPLY_ID = {1}", board_id, reply_id);
+                SqlCommand sc = new SqlCommand();
+                sc.Connection = conn;
+                sc.CommandText = sql;
+                sc.CommandType = CommandType.Text;
+
+                SqlDataAdapter sa = new SqlDataAdapter();
+                sa.SelectCommand = sc;
+
+                DataSet ds = new DataSet();
+                sa.Fill(ds, "[REPLY_ANSWER_VIEW]");
+                foreach (DataRow row in ds.Tables[0].Rows)
+                    count = (int)row["COUNT"];
+            }
+            catch (Exception ex)
+            {
+                Response.Write(ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return count;
+
+        }
+
+
+
+
         // 돌아가기
         protected void Back_Click(object sender, EventArgs e)
         {
@@ -334,7 +521,7 @@ namespace WebApp
         protected void Reply_Click(object sender, EventArgs e)
         {
             // board_id 가져오기
-            string board_id = Board_Id.Text;
+            string board_id = Board_Id.Value;
             string pageNum = Request.QueryString["pageNum"].ToString();
             // board_id를 url 에 포함
             string url = "BoardReplyInsert.aspx?board_id=" + board_id +"&pageNum="+pageNum;
@@ -358,7 +545,7 @@ namespace WebApp
         protected string confirmMsg()
         {
             string result = "";
-            string board_id = Board_Id.Text;
+            string board_id = Board_Id.Value;
             result += "<script type='text/javascript'>" +
                       "var deleteFlag = confirm('해당 게시물을 정말 삭제하시겠습니까??');" +
                       "if(deleteFlag == true)" +
@@ -382,7 +569,7 @@ namespace WebApp
         {
             string url = "";
             // 수정을 하기 위한 데이터 : 게시물id, 게시물 제목, 게시물 내용
-            string board_id = Board_Id.Text;
+            string board_id = Board_Id.Value;
             string pageNum = Request.QueryString["pageNum"].ToString();
             // 세션 유지를 위한 데이터
             Session["userid"] = Page.Session["userid"].ToString();

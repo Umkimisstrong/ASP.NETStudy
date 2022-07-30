@@ -1,0 +1,51 @@
+﻿@model IEnumerable<MVCTest.Models.Movie>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<hr />
+<p>
+    @Html.ActionLink("Create New", "Create") 를 누르면 새로운 영화 데이터를 입력하는 페이지로 이동한다.
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReleaseDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Genre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReleaseDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Genre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) 수정| 
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) 상세|
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })삭제
+        </td>
+    </tr>
+}
+
+</table>

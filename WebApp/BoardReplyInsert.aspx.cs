@@ -62,9 +62,11 @@ namespace WebApp
             {
                 // 이전 페이지 : BoardDetail.aspx 로 부터 넘어온 데이터 수신
                 board_id = Request.QueryString["board_id"].ToString();
-                user_id = Page.Session["userid"].ToString();
-                if (user_id == null)
+                
+                if (Page.Session["userid"] == null)
                     Response.Redirect("BoardLogin2.aspx");
+
+                user_id = Page.Session["userid"].ToString();
 
                 pageNum = Request.QueryString["pageNum"].ToString();
                 reply_content = Reply_Content.Text;
@@ -91,7 +93,7 @@ namespace WebApp
 
                 // 쿼리문 준비
                 string sql = string.Format("INSERT INTO TB_REPLY(REPLY_ID, REPLY_CONTENT, U_ID, BOARD_ID)" +
-                                          " VALUES ( (SELECT COUNT(*) + 1 AS [COUNT] FROM TB_REPLY)" +
+                                          " VALUES ( (NEXT VALUE FOR REPLY_SEQ)" +
                                           ", '{0}'" +
                                           ", '{1}'" +
                                           ", {2})"

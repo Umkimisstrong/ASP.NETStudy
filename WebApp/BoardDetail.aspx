@@ -10,32 +10,133 @@
 <style type="text/css">
     body
         {
-            background-color: white;
+            background-color: gray;
             text-align:center;
         }
     .header
     {
         display:inline-block;
-        width: 650px;
+        width: 1000px;
+        color:white;
     }
 
     .content
     {
         display:inline-block;
+        width: 1000px;
         text-align:center;
     }
     .Board_SubTitle
     {
         display:inline-block;
+        width: 1000px;
     }
+    a
+        {
+            color:darkolivegreen;
+            font-weight:bold;
+        }
+        a:hover
+        {
+            color:darksalmon;
+        }
+
+        td {
+            color:darkgoldenrod;
+            font-weight:bold;
+        }
+
+    .container {
+
+        display:inline-block;
+        width: 1000px;
+    }
+
+    #Back {
+        color:darkolivegreen;
+        font-weight:bold;
+    }
+        #Back:hover {
+            color:darksalmon;
+        }
+    #Reply {
+        color:darkolivegreen;
+        font-weight:bold;
+    }
+        #Reply:hover {
+            color:darksalmon;
+        }
+    #Delete {
+        color:darkolivegreen;
+        font-weight:bold;
+    }
+        #Delete:hover {
+            color:darksalmon;
+        }
+    #Update {
+        color:darkolivegreen;
+        font-weight:bold;
+    }
+        #Update:hover {
+            color:darksalmon;
+        }
 </style>
+
+    <%-- 댓글아이디 들고간다. --%>
+
+<script>
+    function answer(reply_id)
+    {
+        //alert("답변");
+        var replyId = reply_id;
+        //alert(reply_id);
+        var board_id = document.getElementById("Board_Id").value;
+        //alert(board_id);
+        var pageNum = document.getElementById("PageNum").value;
+        //alert(pageNum);
+
+        if (reply_id != null || replyId.trim() != "")
+        {
+            location.href = "BoardAnswerInsert.aspx?reply_id=" + replyId + "&pageNum=" + pageNum + "&board_id=" + board_id;
+        }
+        else
+        {
+            alert("댓글아이디가없음");
+            return;
+        }
+    }
+
+    function deleteAnswer(answer_id) {
+
+        var result = confirm("선택하신 답변을 정말 삭제하시겠습니까??");
+        if (!result)
+        {
+            alert("취소되었습니다.");
+            return;
+        }
+
+        //alert("답변");
+        var answerId = answer_id;
+        //alert(reply_id);
+        var board_id = document.getElementById("Board_Id").value;
+        //alert(board_id);
+        var pageNum = document.getElementById("PageNum").value;
+        //alert(pageNum);
+
+        
+        location.href = "BoardAnswerDelete.aspx?answer_id=" + answerId + "&pageNum=" + pageNum + "&board_id=" + board_id;
+        
+    }
+</script>
 
 </head>
 <body>
+
+<div class="container">
     
 <div class="header">
     <h1>
-        회원 게시판
+        Member Board
     </h1>
     <hr />
 </div>
@@ -47,10 +148,10 @@
     <form id="backForm" runat="server">
     <div class="Board_SubTitle" >
         
-        <asp:Table ID="Board_Detail" runat="server" BorderStyle="Ridge" BorderWidth="2px" CellSpacing="1" BackColor="Window" CellPadding="6" Width="600px">
+        <asp:Table ID="Board_Detail" runat="server" BorderStyle="Ridge" BorderWidth="2px" CellSpacing="1" BackColor="Window" CellPadding="6" Width="1000px">
 
         </asp:Table>
-        <asp:Textbox ID="textarea" Width="591px" mode="multiline" runat="server" ReadOnly="true" Font-Bold="true" Font-Size="Large">
+        <asp:Textbox ID="textarea" Width="991px" mode="multiline" runat="server" ReadOnly="true" Font-Bold="true" Font-Size="Large">
 
         </asp:Textbox> <br />
 
@@ -60,8 +161,8 @@
         <br />
         
     
-        <h2>댓 글</h2>
-        <asp:Table ID="Board_Reply" runat="server" BorderStyle="Ridge" BorderWidth="2px" CellSpacing="1" BackColor="Window" CellPadding="6" Width="600px">
+        <h2>Replies</h2>
+        <asp:Table ID="Board_Reply" runat="server" BorderStyle="Ridge" BorderWidth="2px" CellSpacing="1" BackColor="Window" CellPadding="6" Width="1000px">
         </asp:Table>
         <asp:Button ID="Back" Text="돌아가기" OnClick="Back_Click" runat="server"/>
         <asp:Button ID="Reply" Text="댓글작성" OnClick="Reply_Click" runat="server"/>
@@ -69,7 +170,10 @@
         <asp:Button ID="Update" Text="게시물수정" runat="server" Visible="false" OnClick="Update_Click"/>
 
         <%-- 숨겨진항목 --%>
-        <asp:TextBox ID="Board_Id" Visible="false" runat="server"></asp:TextBox>
+        <%--<asp:TextBox ID="Board_Id" Visible="false" runat="server"></asp:TextBox>
+        <asp:TextBox ID="PageNum" Visible="false" runat="server"></asp:TextBox>--%>
+        <asp:HiddenField ID="Board_Id" runat="server" ClientIDMode="AutoID"/>
+        <asp:HiddenField ID="PageNum" runat="server" ClientIDMode="AutoID"/>
     </form>
 
 </div>
@@ -78,6 +182,6 @@
 <div class="footer">
    
 </div>
-
+</div>
 </body>
 </html>

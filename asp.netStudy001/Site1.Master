@@ -1,0 +1,147 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="asp.netStudy001.Site1" %>
+
+<!DOCTYPE html>
+
+<html>
+    <%--
+        마스터페이지 정의
+        
+        <div header>
+        </div>
+
+        <div mainContent>
+        </div>
+
+        <div leftContent>
+        </div>
+        
+        <div footer>
+        </div>
+
+    --%>
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>MasterPage</title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+<style type="text/css">
+    body {
+        text-align:center;
+    }
+    .container {
+        display:inline-block; 
+        text-align:center;
+        
+        width:1500px;
+        height:800px;
+    }
+    .header {
+         display:inline-block;
+         text-align: right;
+         background-color: #600;
+         color: White;
+         font-size: x-large;
+         text-decoration: none;
+         font-weight: bold;
+         padding: 10px;
+         height: 130px;
+         width:95%;
+    }
+
+    .contents {
+        display:inline-block;
+        width:90%;
+        height:90%;
+    }
+        .contents .leftContent{
+            float:left;
+            width:33%;
+            height:100%;
+            text-align:left;
+            background-color:darkolivegreen;
+        }
+        .contents .mainContent {
+            float:left;
+            width:60%;
+            height:100%;
+            text-align:left;
+            margin-left:3%;
+        }
+    .footer {
+        display:inline-block;
+        background-color:antiquewhite;
+        width:95%;
+        height: 100px;
+    }
+</style>
+</head>
+<body>
+    <%-- asp control 사용을 위한 form --------------------------------------------------------------------------------------------------%>
+    
+    <%-- master page 에서 고정시킬 div .container --%>
+    <div class="container">
+
+    
+        <%-- master page 에서 고정시킬 div .header --%>
+        <div class="header">
+            <h1>
+                Header for Master Page
+            </h1>
+            <hr />
+        </div>
+        <%-- master page 에서 고정시킬 div .header --%>
+
+        <%-- master page 에서 고정시킬 div .contents --%>
+        <div class="contents">
+
+            <%-- master page 에서 고정시킬 div .leftContent --%>
+            <div class="leftContent">
+                <h2>
+                    Left for Master Page
+                </h2>
+                <h3>Lessons</h3>    
+                     <ul>
+                        <li>TODO</li>
+                    </ul>
+                 <h3>News</h3>    
+                    <ul>
+                        <li>TODO</li>
+                    </ul>
+            </div>
+            <%-- master page 에서 고정시킬 div .leftContent --%>
+
+            <%-- master page 에서 고정시킬 div .mainContent --%>
+            <div class="mainContent">
+                <%--□□□□□□□□□□□□□□□□□□□□□□□□□□ main Content 가 삽입될 asp control □□□□□□□□□□□□□□□□□□□□□□□□□□--%>
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                </asp:ContentPlaceHolder>
+                <%--□□□□□□□□□□□□□□□□□□□□□□□□□□ main Content 가 삽입될 asp control □□□□□□□□□□□□□□□□□□□□□□□□□□--%>
+            </div>
+            <%-- master page 에서 고정시킬 div .mainContent --%>
+        </div>
+
+
+
+
+        <%-- master page 에서 고정시킬 div .footer --%>
+        <div class="footer">
+            <hr />
+            <h3>
+                footer for Matser Page
+            </h3>
+        </div>
+        <%-- master page 에서 고정시킬 div .footer --%>
+
+
+
+
+
+
+
+
+
+    </div>
+    <%-- master page 에서 고정시킬 div .container --%>
+    <%--------------------------------------------------------------------------------------------------- asp control 사용을 위한 form --%>
+</body>
+</html>
