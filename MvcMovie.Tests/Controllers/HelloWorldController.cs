@@ -14,10 +14,16 @@ namespace MvcMovie.Tests.Controllers
         //    return "This is my <b> default </b> action...";
         //}
 
+        /// <summary>
+        /// HelloWorldController > Index()
+        /// 기본 뷰(VIEW) 출력
+        /// </summary>
+        /// <returns>View()</returns>
         public ActionResult Index()
         {
             return View();
         }
+
         //// GET: HelloWolrd/Welcome/
         //public string Welcome()
         //{
@@ -29,6 +35,14 @@ namespace MvcMovie.Tests.Controllers
         //    return HttpUtility.HtmlEncode("Hello " + name + ", NumTimes is : " + numTimes); 
         //}
 
+
+        /// <summary>
+        /// HelloWorldController > Welcome() 
+        /// name, numTimes 를 넘겨받아 출력
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="numTimes"></param>
+        /// <returns></returns>
         public ActionResult Welcome(string name, int numTimes = 1)
         {
             ViewBag.Message = "Hello " + name;

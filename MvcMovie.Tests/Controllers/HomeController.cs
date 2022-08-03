@@ -4,6 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+/// <summary>
+/// HomeController
+/// MVC 기본 페이지 액션
+/// </summary>
 namespace MvcMovie.Tests.Controllers
 {
     public class HomeController : Controller

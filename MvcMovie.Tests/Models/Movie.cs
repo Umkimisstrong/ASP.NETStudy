@@ -4,6 +4,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MvcMovie.Tests.Models
 {
+    /// <summary>
+    /// Movie Model
+    /// 속성 - ID / Title / ReleaseDate / Genre / Price / Rating
+    /// 조건 - property 별 명시
+    /// </summary>
     public class Movie
     {
         public int ID { get; set; }
@@ -34,6 +39,10 @@ namespace MvcMovie.Tests.Models
 
     }
 
+    
+    /// <summary>
+    /// MovieDbContext Model
+    /// </summary>
     public class MovieDBContext : DbContext
     { 
         public DbSet<Movie> Movies { get; set; }
