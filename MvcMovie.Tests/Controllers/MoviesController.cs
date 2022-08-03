@@ -52,7 +52,7 @@ namespace MvcMovie.Tests.Controllers
             }
 
 
-            int pageSize = 3; //  한 페이지에 불러올 컨텐츠의 수
+            int pageSize = 10; //  한 페이지에 불러올 컨텐츠의 수
             int pageNumber = (page ?? 1);
 
             return View(movies.ToPagedList(pageNumber, pageSize));
