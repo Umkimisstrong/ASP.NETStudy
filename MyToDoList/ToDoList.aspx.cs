@@ -284,7 +284,7 @@ namespace MyToDoList
         {
             get { return _isRefresh; }
         }
-
+        
         protected override void LoadViewState(object savedState)
         {
             object[] allStates = (object[])savedState;

@@ -52,7 +52,7 @@ namespace MyToDoList.DataBase
         /// <summary>
         /// SqlConnection 을 close()
         /// </summary>
-        public static void close()
+        public static void Close()
         {
             if (conn != null)
             {

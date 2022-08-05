@@ -6,85 +6,90 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using FileSystem_Upload.Util;
 
 namespace FileSystem_Upload
 {
     public partial class FileUpload001 : System.Web.UI.Page
     {
+       
+
         /// <summary>
-        /// Page_Load
+        /// Page_Load()
         /// 페이지 로드 시 수행
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Form 에서 PostBack 이 발생하였다면, FileUpload()
+            
+            HttpContext context = HttpContext.Current;
+            FileSystem fs;  
+            // PostBack 되었다면 - 업로드
             if (Page.IsPostBack)
             {
-                File_Upload();
-
+                fs = new FileSystem();
+                fs.File_Upload(context, Upload, UploadResult);
             }
+            
+            // QueryString 『fileName』 이 존재한다면 - 다운로드
+            if (context.Request.QueryString["fileName"] != null )
+            {
+                fs = new FileSystem();
+                fs.ProcessRequest(context);
+            }
+
+            // 테이블에 다운로드할 파일 출력
+            fs = new FileSystem();
+            PrintFileLists(context, fs);
+
         }
 
         /// <summary>
-        /// File_Upload
-        /// 사용자가 등록한 파일을 특정 경로에 저장하는 작업 수행
+        /// PrintFileLists()
+        /// 파일을 넘겨받아 리스트를 출력해주는 메소드
         /// </summary>
-        /// <returns></returns>
-        public void File_Upload()
+        /// <param name="context"></param>
+        /// <param name="fs"></param>
+        #region void PrintFileLists(HttpContext context, FileSystem fs)
+        protected void PrintFileLists(HttpContext context, FileSystem fs)
         {
-            string fileName = string.Empty;            
-            
-            string filePath = "";
+            // 파일 이름 가져오기
+            string[] fileNameLists = fs.getFileNames(context);
 
-            // 파일이 올라와 있으며, ContentLength 가 0보다 크다면(유효한 파일?이라면)
-            if ((Upload.PostedFile != null) && (Upload.PostedFile.ContentLength > 0))
+            // 파일 다운로드 링크가져오기
+            List<string> linkedFilesList = fs.setFileDownLoadToLink(context, fileNameLists);
+
+            // 링크랑 이름을 테이블에 출력
+            for (int i = 0; i < linkedFilesList.Count; i++)
             {
-                // 업로드 폼에 등록된 파일의 실제이름 반환
-                fileName = System.IO.Path.GetFileName(Upload.PostedFile.FileName);
+                TableRow tr = new TableRow();
 
-                // 『.』 의 마지막 위치를 파악해서 확장자 확인  
-                int indexOfDot = fileName.LastIndexOf(".");
+                TableCell td = new TableCell();
+                td.Text = fileNameLists[i];
+                tr.Cells.Add(td);
 
-                // 확장자를 뺀 파일명
-                string strName = fileName.Substring(0, indexOfDot);
+                td = new TableCell();
+                td.Text = linkedFilesList[i];
+                tr.Cells.Add(td);
 
-                // 파일의 확장자
-                string strExt = fileName.Substring(indexOfDot + 1);
 
-                // 실행파일이라면(exe / EXE)
-                if (strExt.Equals("exe") || strExt.Equals("EXE"))
-                {
-                    // 알려주고 응답종료
-                    UploadResult.Text = "exe 파일은 업로드 할 수 없습니다.";
-                    Response.End();
-                }
-                else
-                {
-                    try
-                    {
-                        // C:\Users\User\Desktop\Uploads
-                        filePath = ConfigurationManager.AppSettings["uploadPath"].ToString();
-                        Upload.PostedFile.SaveAs(filePath + fileName);
-                        UploadResult.Text = "파일이 성공적으로 업로드 되었습니다.";
-
-                    }
-                    catch (Exception ex)
-                    {
-                        UploadResult.Text = "파일 업로드가 실행되지 않았습니다." + ex.Message;
-                    }
-                }
+                FileDownLoadList.Rows.Add(tr);
             }
-            else
-            {
-                UploadResult.Text = "파일을 선택해주세요";
-            }
-
-
         }
+
+        #endregion
+
+
+
 
     }
 
-   
+
+
+
+
+
+
+
 }

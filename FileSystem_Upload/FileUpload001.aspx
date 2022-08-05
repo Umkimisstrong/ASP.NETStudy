@@ -10,12 +10,25 @@
 <body>
     <form id="form1" runat="server">
         <div>
+            <%-- 파일을 업로드 하는 영역 --%>
             <div>
-            <asp:FileUpload ID="Upload" runat="server" enctype="multipart/form"/>
-            </div>
-            <button type="submit">업로드</button>
-            <asp:Label ID="UploadResult" runat="server" ForeColor="red"></asp:Label>
+                <asp:FileUpload ID="Upload" runat="server" enctype="multipart/form"/>
             
+            
+            
+                <asp:Button runat="server" ID="UpdateBtn" Text="업로드"/>
+                <asp:Label ID="UploadResult" runat="server" ForeColor="red"></asp:Label>
+            </div>
+
+
+            <br />
+
+            
+            <%-- 파일을 다운로드 하는 영역 --%>
+            <asp:Table ID="FileDownLoadList" runat="server">
+
+            </asp:Table>
+
         </div>
     </form>
 </body>
