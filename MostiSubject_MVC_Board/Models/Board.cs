@@ -36,6 +36,7 @@ namespace MostiSubject_MVC_Board.Models
 
         public int del_check { get; set; }
     
+        public int rownum { get; set; }
 
     }
 }

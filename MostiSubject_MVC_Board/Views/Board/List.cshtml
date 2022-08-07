@@ -1,5 +1,80 @@
-﻿@{
+﻿@model MostiSubject_MVC_Board.Models.BoardResponse
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style type="text/css">
+    .leaves {
+        width:1000px;
+    }
+    .leaves th{
+        padding-bottom:1em;
+       
 
+    }
+        .leaves th.board_rownum {
+            width: 5%;
+        }
+    .leaves th.board_title{
+            width:20%;
+        }
+        .leaves th.board_date {
+            width:20%;
+
+        }
+        .leaves th.board_writer {
+            width:20%;
+        }
+        .leaves td {
+          
+        }
+</style>
+
+<div>
+    <h3>
+        게시물 목록
+    </h3>
+    <hr />
+</div>
+
+<div>
+    <table class="leaves">
+        <tr>
+            <th class="board_rownum">
+                번호
+            </th>
+            <th class="board_title">
+                제목
+            </th>
+            <th class="board_writer">
+                작성자
+            </th>
+            <th class="board_date">
+                작성일
+            </th>
+        </tr>
+        @{
+
+            foreach (MostiSubject_MVC_Board.Models.Board board in @Model.BoardList)
+            {
+                <tr>
+                    <td>
+                        @board.rownum
+                    </td>
+                    <td>
+                        @board.title
+                    </td>
+                    <td>
+                        @board.u_id
+                    </td>
+                    <td>
+                        @board.board_date
+                    </td>
+                </tr>
+            }
+
+
+        }
+
+    </table>
+    </div>

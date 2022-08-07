@@ -19,7 +19,7 @@ namespace MostiSubject_MVC_Board.DataBase.Task
         /// SqlConnection
         /// DB 연결을 위한 객체
         /// </summary>
-        private static SqlConnection conn;
+        protected static SqlConnection conn;
 
         /// <summary>
         /// List<Board> ReadBoard(string search_type, string search_value)
@@ -27,37 +27,44 @@ namespace MostiSubject_MVC_Board.DataBase.Task
         /// <param name="search_type"></param>
         /// <param name="search_value"></param>
         /// <returns></returns>
+        #region ReadBoard()
         public List<Board> ReadBoard(string search_type, string search_value)
         {
             List<Board> boardList = new List<Board>();
 
             // 검색조건과 검색어가 없다면 기본값 부여
             if (string.IsNullOrEmpty(search_type))
-                search_type = "BAORD_TITLE";
+                search_type = "BOARD_TITLE";
 
             if (string.IsNullOrEmpty(search_value))
                 search_value = "%%";
 
             conn = DBConnection.GetConnection();
 
-            conn.Open();
+           
 
             DataSet ds = new DataSet();
 
             try
             {
-                
+
+              
                 SqlCommand cmd = new SqlCommand();
+
                 cmd.Connection = conn;
-                cmd.CommandText = "BOARD_R";
                 cmd.CommandType = CommandType.StoredProcedure;
+                //cmd.Parameters.AddWithValue("@SEARCH_TYPE", search_type);
+                //cmd.Parameters.AddWithValue("@SEARCH_VALUE", search_value);
+                cmd.CommandText = "BOARD_R";
+                conn.Open();
 
-                cmd.Parameters.AddWithValue("@SEARCH_TYPE", search_type);
-                cmd.Parameters.AddWithValue("@SEARCH_VALUE", search_value);
 
-                SqlDataAdapter sda = new SqlDataAdapter();
-                sda.SelectCommand = cmd;
-                sda.Fill(ds, "TB_BOARD");
+                SqlDataAdapter sda = new SqlDataAdapter()
+                {
+                    SelectCommand = cmd
+                };
+
+                sda.Fill(ds, "BOARD_VIEW");
                 
 
             }
@@ -77,18 +84,21 @@ namespace MostiSubject_MVC_Board.DataBase.Task
                     Board board = new Board();
 
                     // 객체들에 담기
+                    board.rownum = int.Parse(row["ROWNUM"].ToString());
                     board.board_id = int.Parse(row["BOARD_ID"].ToString());
-                    board.title = row["BOARD_TITle"].ToString();
+                    board.title = row["BOARD_TITlE"].ToString();
                     board.u_id = row["U_ID"].ToString();
+                    board.board_date = (DateTime)row["BOARD_DATE"];
+
+                    boardList.Add(board);
 
                 }
             }
             
-
-
             return boardList;
 
         }
+        #endregion
 
 
 
