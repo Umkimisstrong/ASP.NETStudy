@@ -84,3 +84,7 @@ C:\ASP.NETStudy\ASP.NETStudy\MostiSubject_MVC_Board\obj\Debug\MostiSubject_MVC_B
 C:\ASP.NETStudy\ASP.NETStudy\MostiSubject_MVC_Board\obj\Debug\MostiSubject_MVC_Board.csproj.CopyComplete
 C:\ASP.NETStudy\ASP.NETStudy\MostiSubject_MVC_Board\obj\Debug\MostiSubject_MVC_Board.dll
 C:\ASP.NETStudy\ASP.NETStudy\MostiSubject_MVC_Board\obj\Debug\MostiSubject_MVC_Board.pdb
+C:\ASP.NETStudy\ASP.NETStudy\MostiSubject_MVC_Board\bin\PagedList.dll
+C:\ASP.NETStudy\ASP.NETStudy\MostiSubject_MVC_Board\bin\PagedList.Mvc.dll
+C:\ASP.NETStudy\ASP.NETStudy\MostiSubject_MVC_Board\bin\PagedList.xml
+C:\ASP.NETStudy\ASP.NETStudy\MostiSubject_MVC_Board\bin\PagedList.Mvc.xml

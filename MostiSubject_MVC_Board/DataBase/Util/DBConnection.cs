@@ -30,8 +30,10 @@ namespace MostiSubject_MVC_Board.DataBase.Util
 
         /// <summary>
         /// GetConnection()
+        /// Local DataBase 의 Connection 을 얻어내는 기능 수행
         /// </summary>
         /// <returns>SqlConnection</returns>
+        #region GetConnection()
         public static SqlConnection GetConnection()
         {
             if (conn == null)
@@ -48,11 +50,12 @@ namespace MostiSubject_MVC_Board.DataBase.Util
 
             return conn;
         }
-
+        #endregion
 
         /// <summary>
         /// SqlConnection 을 close()
         /// </summary>
+        #region Close()
         public static void Close()
         {
             if (conn != null)
@@ -71,6 +74,7 @@ namespace MostiSubject_MVC_Board.DataBase.Util
                 conn = null;
             }
         }
+        #endregion
 
     }
 }

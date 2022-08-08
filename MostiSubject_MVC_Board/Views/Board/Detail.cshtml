@@ -1,0 +1,61 @@
+﻿@model MostiSubject_MVC_Board.Models.BoardResponse
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/PagedList.css" rel="stylesheet"/ type="text/css">
+@* 페이지 기본 정보 *@
+<div>
+    <h3>
+        게시물 조회
+    </h3>
+    <hr />
+</div>
+
+@* 입력 폼 *@
+<div style="width:400px;">
+
+
+
+        <div class="form-group">
+            <h4><span class="label label-default"> 제목 </span></h4>
+            <input type="text" value="@Model.boardDetail.title" class="form-control" readonly="readonly" style="background-color:white;" />
+        </div>
+
+        <div class="form-group">
+            <h4><span class="label label-default">내용</span></h4>
+            <textarea rows="30" class="form-control" readonly="readonly" style="background-color:white; -moz-appearance:none; resize:none;">
+            @Model.boardDetail.title
+            </textarea>
+        </div>
+
+        <div class="form-group">
+            <h4><span class="label label-default">작성자</span></h4>
+            <input type="text" value="@Model.boardDetail.u_id" class="form-control" readonly="readonly"/>
+        </div>
+
+        <div class="form-group">
+
+            <h4><span class="label label-default">파일</span></h4>
+
+            @using (Html.BeginForm("Detail", "Board", FormMethod.Post))
+            {
+                <input type="hidden" name="fileName" id="fileName" value="@Model.boardDetail.fileName" />
+                if (Model.boardDetail.fileName == "업로드된 파일 없음")
+                {
+                    <span class="form-control" style="width:280px; background-color:darkgrey;">@Model.boardDetail.fileName</span>
+                    <input type="submit" value="다운로드" class="form-control" disabled="disabled">
+                }
+                else
+                {
+                    <span class="form-control" style="width:280px;">@Model.boardDetail.fileName</span>
+                    <input type="submit" value="다운로드" class="form-control">
+                }
+
+            }
+        </div>
+
+
+</div>
+
+

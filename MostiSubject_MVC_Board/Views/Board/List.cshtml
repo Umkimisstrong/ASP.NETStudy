@@ -1,35 +1,44 @@
-﻿@model MostiSubject_MVC_Board.Models.BoardResponse
+﻿@model PagedList.IPagedList<MostiSubject_MVC_Board.Models.Board>
+
+@using PagedList.Mvc;
+
+
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <style type="text/css">
     .leaves {
-        width:1000px;
+        width: 1000px;
     }
-    .leaves th{
-        padding-bottom:1em;
-       
 
-    }
-        .leaves th.board_rownum {
-            width: 5%;
+        .leaves th {
+            padding-bottom: 1em;
         }
-    .leaves th.board_title{
-            width:20%;
-        }
-        .leaves th.board_date {
-            width:20%;
 
-        }
-        .leaves th.board_writer {
-            width:20%;
-        }
+            .leaves th.board_rownum {
+                width: 5%;
+            }
+
+            .leaves th.board_title {
+                width: 20%;
+            }
+
+            .leaves th.board_date {
+                width: 20%;
+            }
+
+            .leaves th.board_writer {
+                width: 20%;
+            }
+            .leaves th.linkBtn {
+                width:6%;
+            }
         .leaves td {
-          
         }
 </style>
 
+@* 페이지 기본 정보 영역 *@
 <div>
     <h3>
         게시물 목록
@@ -37,38 +46,54 @@
     <hr />
 </div>
 
+@* 게시물 리스트가 출력되는 영역 *@
 <div>
     <table class="leaves">
-        <tr>
-            <th class="board_rownum">
-                번호
-            </th>
-            <th class="board_title">
-                제목
-            </th>
-            <th class="board_writer">
-                작성자
-            </th>
-            <th class="board_date">
-                작성일
-            </th>
-        </tr>
+            <tr>
+                <th class="board_rownum">
+                    번호 
+                </th>
+                <th class="board_title">
+                    제목 
+                </th>
+                <th class="board_writer">
+                    작성자
+                </th>
+                <th class="board_date">
+                    작성일
+                </th>
+                <th class="linkBtn">
+                    상세
+                </th>
+            </tr>
+        
+
+        @* 모델에서 출력하는 내용  *@
         @{
 
-            foreach (MostiSubject_MVC_Board.Models.Board board in @Model.BoardList)
+            foreach (var item in Model)
             {
                 <tr>
                     <td>
-                        @board.rownum
+                        @Html.DisplayFor(modelItem => item.rownum)
                     </td>
                     <td>
-                        @board.title
+                        @Html.DisplayFor(modelItem => item.title)
                     </td>
                     <td>
-                        @board.u_id
+                        @Html.DisplayFor(modelItem => item.u_id)
                     </td>
                     <td>
-                        @board.board_date
+                        @Html.DisplayFor(modelItem => item.board_date)
+                    </td>
+                    <td>
+                        @Html.ActionLink(
+                                  "상세"                                                        // linkText
+                                  , "Detail"                                                    // actionName
+                                  , "Board"                                                     // controller
+                                  , new { board_id = item.board_id, page = ViewBag.pageNumber } // routeValue
+                                  , null                                                        // htmlAttribute
+                                  )
                     </td>
                 </tr>
             }
@@ -77,4 +102,9 @@
         }
 
     </table>
+
+    @* 페이지 리스트 *@
+    <div style="text-align:center; display:inline;">
+        @Html.PagedListPager(Model, page => Url.Action("List", new { page }))
     </div>
+</div>

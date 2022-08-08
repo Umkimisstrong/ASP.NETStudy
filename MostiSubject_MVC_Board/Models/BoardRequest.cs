@@ -11,6 +11,8 @@ namespace MostiSubject_MVC_Board.Models
         public string search_type { get; set; }
         public string search_word { get; set; }
 
+        public int row_start { get; set; }
+        public int row_end { get; set;}
 
     }
 }
