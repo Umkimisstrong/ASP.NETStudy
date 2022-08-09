@@ -46,6 +46,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Mosti.Configuration.v2.2, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\Mosti.Configuration.v2.2.dll</HintPath>
+    </Reference>
+    <Reference Include="Mosti.Models.v2.2, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\Mosti.Models.v2.2.dll</HintPath>
+    </Reference>
+    <Reference Include="Mosti.Web.Mvc.Runtime.v2.2, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\Mosti.Web.Mvc.Runtime.v2.2.dll</HintPath>
+    </Reference>
+    <Reference Include="Mosti.Web.Mvc.Theme.v2.2, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Resources\Mosti.Web.Mvc.Theme.v2.2.dll</HintPath>
+    </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
@@ -126,6 +142,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="ControlHelpers\ApinHtml.cs" />
     <Compile Include="Controllers\BoardController.cs" />
     <Compile Include="DataBase\Task\BoardDAO.cs" />
     <Compile Include="DataBase\Util\DBConnection.cs" />
@@ -150,6 +167,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Resources\Mosti.Configuration.v2.2.dll" />
+    <Content Include="Resources\Mosti.Models.v2.2.dll" />
+    <Content Include="Resources\Mosti.Web.Mvc.Runtime.v2.2.dll" />
+    <Content Include="Resources\Mosti.Web.Mvc.Theme.v2.2.dll" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
@@ -178,6 +199,7 @@
     <Content Include="Views\Board\Create.cshtml" />
     <Content Include="Views\Board\Errors.cshtml" />
     <Content Include="Views\Board\Detail.cshtml" />
+    <Content Include="Views\Board\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

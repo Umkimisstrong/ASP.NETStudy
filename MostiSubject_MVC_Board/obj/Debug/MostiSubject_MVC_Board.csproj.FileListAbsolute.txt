@@ -88,3 +88,7 @@ C:\ASP.NETStudy\ASP.NETStudy\MostiSubject_MVC_Board\bin\PagedList.dll
 C:\ASP.NETStudy\ASP.NETStudy\MostiSubject_MVC_Board\bin\PagedList.Mvc.dll
 C:\ASP.NETStudy\ASP.NETStudy\MostiSubject_MVC_Board\bin\PagedList.xml
 C:\ASP.NETStudy\ASP.NETStudy\MostiSubject_MVC_Board\bin\PagedList.Mvc.xml
+C:\ASP.NETStudy\ASP.NETStudy\MostiSubject_MVC_Board\bin\Mosti.Configuration.v2.2.dll
+C:\ASP.NETStudy\ASP.NETStudy\MostiSubject_MVC_Board\bin\Mosti.Models.v2.2.dll
+C:\ASP.NETStudy\ASP.NETStudy\MostiSubject_MVC_Board\bin\Mosti.Web.Mvc.Runtime.v2.2.dll
+C:\ASP.NETStudy\ASP.NETStudy\MostiSubject_MVC_Board\bin\Mosti.Web.Mvc.Theme.v2.2.dll

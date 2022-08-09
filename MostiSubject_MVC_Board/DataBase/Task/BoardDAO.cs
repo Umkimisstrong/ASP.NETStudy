@@ -37,7 +37,9 @@ namespace MostiSubject_MVC_Board.DataBase.Task
 
             if (string.IsNullOrEmpty(request.search_word))
                 request.search_word = "%%";
-
+            else
+                request.search_word = "%" + request.search_word + "%";
+            
             conn = DBConnection.GetConnection();
 
 
@@ -245,9 +247,109 @@ namespace MostiSubject_MVC_Board.DataBase.Task
         }
         #endregion
 
+        
+        /// <summary>
+        /// int DeleteBoard(int board_id)
+        /// 게시물을 삭제하는 메소드
+        /// </summary>
+        /// <param name="board_id"></param>
+        /// <returns></returns>
+        public int DeleteBoard(int board_id) 
+        {
+            int result = 0;
+
+            conn = DBConnection.GetConnection();
+
+            SqlCommand cmd = new SqlCommand();
+
+            
+            try
+            {
+                cmd.Connection = conn;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "BOARD_D";
+                cmd.Parameters.AddWithValue("@BOARD_ID", board_id);
+                conn.Open();
+                result = cmd.ExecuteNonQuery();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+            
+
+            if(result > 0)
+                return result;
+
+            return -1;
+
+        }
 
 
+        /// <summary>
+        /// int UpdateBoard(Board board)
+        /// 게시물을 수정하는 메소드
+        /// </summary>
+        /// <param name="board"></param>
+        /// <returns></returns>
+        public int UpdateBoard(Board board)
+        {
+            int result = 0;
+
+            conn = DBConnection.GetConnection();
+
+            SqlCommand cmd = new SqlCommand();
+            try
+            {
+
+                // File 업로드 준비
+
+                FileSystem fs = new FileSystem();
+                FileStatus fst = fs.File_Upload(board.files);
+
+                // FileStatus 가 true 라면 db에 업로드
+                // FileStatus 는
+                //              ▶ 업로드된 파일이 없거나
+                //              ▶ 업로드가 정상적으로 된 경우만 true 
+                if (fst.check)
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "BOARD_U";
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@BOARD_ID", board.board_id);
+                    cmd.Parameters.AddWithValue("@BOARD_TITLE", board.title);
+                    cmd.Parameters.AddWithValue("@BOARD_CONTENT", board.content);
+                    cmd.Parameters.AddWithValue("@FILES", fst.fileName);
+                    conn.Open();
+                    result = cmd.ExecuteNonQuery();
+                }
+                else
+                {
+                    return -1;
+                }
 
 
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            if (result > 0)
+                return result;
+
+
+            return -1;
+        }
     }
 }

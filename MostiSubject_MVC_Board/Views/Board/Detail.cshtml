@@ -4,6 +4,26 @@
 }
 
 <link href="~/Content/PagedList.css" rel="stylesheet"/ type="text/css">
+
+@* javascript *@
+<script type="text/javascript">
+
+    // submit 전 삭제여부 확인
+    function delCheck()
+    {
+        var ask = confirm("정말 삭제하시겠습니까?");
+        if (!ask)
+        {
+            alert("취소되었습니다.");
+            return false;
+        }
+
+        return true;
+    }
+
+</script>
+
+
 @* 페이지 기본 정보 *@
 <div>
     <h3>
@@ -24,9 +44,7 @@
 
         <div class="form-group">
             <h4><span class="label label-default">내용</span></h4>
-            <textarea rows="30" class="form-control" readonly="readonly" style="background-color:white; -moz-appearance:none; resize:none;">
-            @Model.boardDetail.title
-            </textarea>
+            <textarea rows="30" class="form-control" readonly="readonly" style="background-color:white; -moz-appearance:none; resize:none;">@Model.boardDetail.content</textarea>
         </div>
 
         <div class="form-group">
@@ -54,7 +72,24 @@
 
             }
         </div>
+        
+        <div class="form-group">
+            @* 수정 *@
+            @Html.ActionLink("수정", "Update", "Board", new { board_id = Model.boardDetail.board_id, page = Model.page }, null)
 
+            @* 삭제 *@
+            @using (Html.BeginForm("Delete", "Board", FormMethod.Post, new { @style = "display:inline;", @onsubmit = "return delCheck()" }))
+            {
+                <input type="hidden" value="@Model.boardDetail.board_id" id="board_id" name="board_id" />
+                <input type="submit" value="삭제" style="background-color:white; padding:0; border:none;" class="text-danger" />
+            }
+
+            <br />
+            @* 돌아가기 *@
+          
+            @Html.ActionLink("돌아가기", "List", "Board", new { search_type = ViewBag.search_type, search_word = ViewBag.search_word, page = ViewBag.pageNumber }, null)
+
+        </div>
 
 </div>
 

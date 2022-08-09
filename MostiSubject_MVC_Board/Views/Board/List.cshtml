@@ -1,11 +1,14 @@
 ﻿@model PagedList.IPagedList<MostiSubject_MVC_Board.Models.Board>
 
 @using PagedList.Mvc;
-
+@using MostiSubject_MVC_Board.ControlHelpers;
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+
+
 
 <style type="text/css">
     .leaves {
@@ -32,12 +35,95 @@
                 width: 20%;
             }
             .leaves th.linkBtn {
-                width:6%;
+                width:10%;
             }
         .leaves td {
         }
+    .search_form {
+        text-align:center;
+    }
+    #search_type {
+        display:inline;
+        width:100px;
+        
+        
+    }
+    #search_word {
+        display:inline;
+    }
 </style>
 
+<link href="~/Content/PagedList.css" rel="stylesheet" / type="text/css">
+
+@* jquery CDN *@
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script type="text/javascript">
+    function Delete(id)
+    {
+        var delCheck = confirm("해당 게시물을 삭제하시겠습니까??");
+        if (!delCheck)
+        {
+            alert("취소되었습니다.");
+            return;
+        }
+        
+        // 삭제 ajax 처리
+        $.ajax({
+
+            data: {
+                board_id: id
+            }
+            , url: "Delete"
+            , type: "POST"
+            , success: function (data) {
+
+                var board_list_html = $(data).find("div.board_list").html();
+                $("div.board_list").html(board_list_html);
+
+            }
+            , error: function (xhr, status, error) {
+                alert(error.toString());
+            }
+
+        });
+    }
+
+    function searching()
+    {
+        var search_type = $("#search_type").val();
+        var search_word = $("#search_word").val();
+        
+
+        $.ajax({
+
+            type:"GET"
+            , data:{
+                search_type: search_type
+                , search_word: search_word
+                
+            }
+            , url:"Search"
+            , success:function (data) {
+                var board_list_html = $(data).find("div.board_list").html();
+                var search_form_html = $(data).find("div.search_form").html();
+                var container_html = $(data).find("div#container").html();
+
+
+                $("div.board_list").html(board_list_html);
+                $("div.search_form").html(search_form_html);
+                $("div#container").html(container_html);
+            }
+            , error: function (xhr, status, error) {
+              
+                //alert(error.toString());
+            }
+
+        });
+    }
+</script>
+<div class="search_form">
 @* 페이지 기본 정보 영역 *@
 <div>
     <h3>
@@ -46,27 +132,79 @@
     <hr />
 </div>
 
+@* 검색하는 영역 *@
+
+    
+    <div class="form-group">
+
+
+        <select id="search_type" class="form-control">
+            @if (ViewBag.search_type != null)
+            {
+                if (ViewBag.search_type == "BOARD_TITLE")
+                {
+                    <option value="BOARD_TITLE" selected="selected">Title</option>
+                    <option value="U_ID">Email</option>
+                    <option value="BOARD_CONTENT">Content</option>
+                }
+                else if (ViewBag.search_type == "U_ID")
+                {
+                    <option value="U_ID" selected="selected">Email</option>
+                    <option value="BOARD_TITLE">Title</option>
+                    <option value="BOARD_CONTENT">Content</option>
+                }
+                else if (ViewBag.search_type == "BOARD_CONTENT")
+                {
+                    <option value="BOARD_CONTENT" selected="selected">Content</option>
+                    <option value="BOARD_TITLE">Title</option>
+                    <option value="U_ID">Email</option>
+                }
+
+            }
+            else
+            {
+                <option value="BOARD_TITLE">Title</option>
+                <option value="U_ID">Email</option>
+                <option value="BOARD_CONTENT">Content</option>
+            }
+        </select>
+
+        @if (ViewBag.search_word != null)
+        {
+            <input type="text" class="form-control" id="search_word" value="@ViewBag.search_word" />
+        }
+        else
+        {
+            <input type="text" class="form-control" placeholder="검색어입력" id="search_word" />
+        }
+
+        <input type="button" id="searchBtn" value="검색" class="btn btn-success" onclick="searching()" />
+
+        <hr />
+    </div>
+</div>
+
 @* 게시물 리스트가 출력되는 영역 *@
-<div>
+<div class="board_list">
     <table class="leaves">
-            <tr>
-                <th class="board_rownum">
-                    번호 
-                </th>
-                <th class="board_title">
-                    제목 
-                </th>
-                <th class="board_writer">
-                    작성자
-                </th>
-                <th class="board_date">
-                    작성일
-                </th>
-                <th class="linkBtn">
-                    상세
-                </th>
-            </tr>
-        
+        <tr>
+            <th class="board_rownum">
+                번호
+            </th>
+            <th class="board_title">
+                제목
+            </th>
+            <th class="board_writer">
+                작성자
+            </th>
+            <th class="board_date">
+                작성일
+            </th>
+            <th class="linkBtn">
+                관리
+            </th>
+        </tr>
+
 
         @* 모델에서 출력하는 내용  *@
         @{
@@ -78,6 +216,10 @@
                         @Html.DisplayFor(modelItem => item.rownum)
                     </td>
                     <td>
+                        @if (item.title.Length > 15)
+                        {
+                            item.title = item.title.Substring(0, 15) + "...";
+                        }
                         @Html.DisplayFor(modelItem => item.title)
                     </td>
                     <td>
@@ -88,23 +230,42 @@
                     </td>
                     <td>
                         @Html.ActionLink(
-                                  "상세"                                                        // linkText
-                                  , "Detail"                                                    // actionName
-                                  , "Board"                                                     // controller
-                                  , new { board_id = item.board_id, page = ViewBag.pageNumber } // routeValue
-                                  , null                                                        // htmlAttribute
-                                  )
+                   "상세"                                                        // linkText
+                   , "Detail"                                                    // actionName
+                   , "Board"                                                     // controller
+                   , new { board_id = item.board_id, page = ViewBag.pageNumber, search_type=ViewBag.search_type, search_word=ViewBag.search_word } // routeValue
+                   , null                                                        // htmlAttribute
+                   )
+                        |
+                        @Html.ActionLink(
+                   "수정"
+                   , "Update"
+                   , "Board"
+                   , new { board_id = item.board_id, page = ViewBag.pageNumber, search_type = ViewBag.search_type, search_word = ViewBag.search_word }
+                   , null
+                   )
+                        |
+                        <button value="@item.board_id"
+                                onclick="Delete(@item.board_id)"
+                                style="background-color:white;
+                                       border:none;
+                                       padding:0;">
+                            <span class="text-danger"> 삭제 </span>
+                        </button>
+
                     </td>
                 </tr>
-            }
-
-
+                }
         }
 
     </table>
 
-    @* 페이지 리스트 *@
+    @* 숨겨진 pageNumber *@
+    <input type="hidden" value="@ViewBag.pageNumber" id="pageNum"/> 
+    @* 페이지 *@
     <div style="text-align:center; display:inline;">
-        @Html.PagedListPager(Model, page => Url.Action("List", new { page }))
+        @Html.PagedListPager(Model, page => Url.Action("List", new { page, search_type = ViewBag.search_type, search_word = ViewBag.search_word }  ))
     </div>
+
+   
 </div>

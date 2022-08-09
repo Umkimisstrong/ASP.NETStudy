@@ -8,6 +8,7 @@ namespace MostiSubject_MVC_Board.Models
 {
     public class BoardResponse
     {
+        // 응답을 위한 BoardResponse 모델
         public List<Board> BoardList { get; set; }
         public IPagedList<Board> PageList { get; set; }
         public Board boardDetail { get; set; }

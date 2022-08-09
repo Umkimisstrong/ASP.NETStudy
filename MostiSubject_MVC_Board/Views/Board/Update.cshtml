@@ -1,0 +1,78 @@
+﻿@model MostiSubject_MVC_Board.Models.Board
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@* 페이지 기본 정보 *@
+<div>
+    <h3>
+        게시물 수정
+    </h3>
+    <hr />
+</div>
+
+@* 입력 폼 *@
+<div style="width:400px;">
+    @using (Html.BeginForm("Update", "Board", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+    {
+
+        @Html.AntiForgeryToken();
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" });
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.title)
+            @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control", @Value = Model.title } })
+            @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.content)
+            @Html.TextAreaFor(model => model.content, new { @class = "form-control", rows = "20", @Value = Model.content })
+            @Html.ValidationMessageFor(model => model.content, "", new { @class = "text-danger" })
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.u_id)
+            @Html.EditorFor(model => model.u_id, new { htmlAttributes = new { @class = "form-control", @readonly = "readyonly", @Value = "skkim@mostisoft.com" } })
+
+        </div>
+
+        <div class="form-group">
+            @if (Model.fileName == "업로드된 파일 없음")
+            {
+                @Html.TextBoxFor(model => model.files, "", new { type = "file" }) <br />
+            }
+            else if (Model.fileName == "")
+            {
+                @Html.TextBoxFor(model => model.files, "", new { type = "file" }) <br />
+            }
+            else
+            {
+                <span id="fileName" class="form-control" style="width:280px; background-color:darkgrey;">@Model.fileName</span>
+
+            }
+        </div>
+
+        <div style="text-align:center; display:inline-block;">
+            @*
+                숨겨진 데이터들
+                게시물 id
+                검색조건(타입)
+                검색어
+                페이지번호
+            *@
+            <input type="hidden" value="@Model.board_id" id="board_id" name="board_id" />
+            <input type="hidden" value="@ViewBag.search_type" id="search_type" name="search_type" />
+            <input type="hidden" value="@ViewBag.search_word" id="search_word" name="search_word" />
+            <input type="hidden" value="@ViewBag.pageNumber" id="page" name="page" />
+            <input type="submit" value="수정" class="btn btn-primary" />
+        </div>
+        <br /><br />
+
+        @Html.ActionLink("돌아가기", "List", "Board", new { search_type = ViewBag.search_type, search_word = ViewBag.search_word, page = ViewBag.pageNumber }, null)
+    }
+
+</div>
