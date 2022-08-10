@@ -64,6 +64,11 @@
                     <span class="form-control" style="width:280px; background-color:darkgrey;">@Model.boardDetail.fileName</span>
                     <input type="submit" value="다운로드" class="form-control" disabled="disabled">
                 }
+                else if (Model.boardDetail.fileName == "")
+                {
+                    <span class="form-control" style="width:280px; background-color:darkgrey;">업로드된 파일 없음</span>
+                    <input type="submit" value="다운로드" class="form-control" disabled="disabled">
+                }
                 else
                 {
                     <span class="form-control" style="width:280px;">@Model.boardDetail.fileName</span>
@@ -75,7 +80,7 @@
         
         <div class="form-group">
             @* 수정 *@
-            @Html.ActionLink("수정", "Update", "Board", new { board_id = Model.boardDetail.board_id, page = Model.page }, null)
+            @Html.ActionLink("수정", "Update", "Board", new { board_id = Model.boardDetail.board_id, page = Model.page, search_type = ViewBag.search_type, search_word = ViewBag.search_word}, null)
 
             @* 삭제 *@
             @using (Html.BeginForm("Delete", "Board", FormMethod.Post, new { @style = "display:inline;", @onsubmit = "return delCheck()" }))

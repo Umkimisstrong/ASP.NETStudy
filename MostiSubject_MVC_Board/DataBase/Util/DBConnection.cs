@@ -45,6 +45,7 @@ namespace MostiSubject_MVC_Board.DataBase.Util
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
+                    // web.config set
                 }
             }
 

@@ -80,19 +80,19 @@ namespace MostiSubject_MVC_Board.DataBase.Task
             }
 
             // 받아온 데이터가 존재한다면
-            if (ds.Tables.Count > 0 && ds != null)
+            if (ds != null && ds.Tables.Count > 0)
             {
                 foreach (DataRow row in ds.Tables[0].Rows)
                 {
                     Board board = new Board();
 
                     // 객체들에 담기
-                    board.rownum = int.Parse(row["ROWNUM"].ToString());
-                    board.board_id = int.Parse(row["BOARD_ID"].ToString());
-                    board.title = row["BOARD_TITlE"].ToString();
-                    board.u_id = row["U_ID"].ToString();
-                    board.board_date = (DateTime)row["BOARD_DATE"];
-                    board.fileName = row["FILES"].ToString();
+                    board.rownum        = int.Parse(row["ROWNUM"].ToString());
+                    board.board_id      = int.Parse(row["BOARD_ID"].ToString());
+                    board.title         = row["BOARD_TITlE"].ToString();
+                    board.u_id          = row["U_ID"].ToString();
+                    board.board_date    = (DateTime)row["BOARD_DATE"];
+                    board.fileName      = row["FILES"].ToString();
 
 
                     boardList.Add(board);

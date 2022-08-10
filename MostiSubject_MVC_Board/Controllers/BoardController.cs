@@ -272,11 +272,11 @@ namespace MostiSubject_MVC_Board.Controllers
             result = dao.UpdateBoard(board);
 
             if (result > 0)
-            {
                 return RedirectToAction("List", boardRequest);
-            }
+            else
+                return View("Errors");
 
-            return View("Errors");
+
         }
         #endregion
 
