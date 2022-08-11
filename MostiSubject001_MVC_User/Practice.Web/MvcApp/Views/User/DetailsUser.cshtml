@@ -1,0 +1,291 @@
+﻿@model MvcApp.Models.Response.UserResponse
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "DetailsUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@* 스크립트 *@
+<script type="text/javascript">
+
+    // 삭제버튼(onsubmit 시 발생하는이벤트)
+    function checkform() {
+        // confirm 을 통한 true / false 반환
+        var delCheck = confirm("해당 유저의 정보를 정말 삭제하시겠습니까?");
+
+        // 취소 선택 시
+        if (!delCheck) {
+            alert("삭제가 취소되었습니다.");
+            return false;
+        }
+
+        // 확인 시 true 반환
+        return true;
+    }
+
+</script>
+@* 스크립트 *@
+
+@* 스타일 *@
+<style type="text/css">
+    form {
+        display: inline;
+    }
+    .col-lg-12 {
+        text-align: left;
+    }
+
+    .bs-component {
+        display: inline-block;
+        text-align: left;
+        width: 98%
+    }
+
+    .myTable {
+        display: inline-block;
+        width: 98%;
+    }
+
+        .myTable th {
+            text-align: right;
+        }
+
+        .myTable td {
+            padding-left: 1em;
+        }
+
+    .myBtn2 {
+        background: none;
+        border: none;
+        color: #337AB7;
+    }
+    .myBtn {
+        background: none;
+        border: none;
+        color: indianred;
+        font-weight: bold;
+    }
+</style>
+@* 스타일 *@
+
+@* 유저 상세 페이지 *@
+<h2>DetailsUser</h2>
+
+@* .bs-docs-section *@
+<div class="bs-docs-section">
+
+    @* .bs-docs-section. .row *@
+    <div class="row">
+
+        @* .bs-docs-section. .row .col-lg-12 *@
+        <div class="col-lg-12">
+
+            @* .bs-docs-section. .row .col-lg-12 .page-header *@
+            <div class="page-header">
+            </div>@* .bs-docs-section. .row .col-lg-12 .page-header *@
+
+            @* .bs-docs-section. .row .col-lg-12 .bs-component *@
+            <div class="bs-component">
+
+                 @*
+                     .bs-docs-section. .row .col-lg-12 .bs-component .myTable
+                     -- 유저 정보가 출력되는 리스트 테이블 --
+                 *@  
+                <table class="myTable" style="border:none;">
+        @* ---------------------------------- 단일 userModel 객체사용 ---------------------------------- *@
+                    @* ID *@
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.userModel.USER_ID)</th>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.userModel.USER_ID)
+                        </td>
+                    </tr>
+
+                    @* PWD *@
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.userModel.USER_PWD)</th>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.userModel.USER_PWD)
+                        </td>
+                    </tr>
+
+                    @* NAME *@
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.userModel.USER_NM)</th>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.userModel.USER_NM)
+                        </td>
+                    </tr>
+
+                    @* BIRTH *@
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.userModel.USER_BIRTH)</th>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.userModel.USER_BIRTH)
+                        </td>
+                    </tr>
+
+                    @* HOBBY *@
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.userModel.HOBBY)</th>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.userModel.HOBBY)
+                        </td>
+                    </tr>
+
+                    @* LIKE_THINGS *@
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.userModel.LIKE_THINGS)</th>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.userModel.LIKE_THINGS)
+                        </td>
+                    </tr>
+
+                    @* DISLIKE_THINGS *@
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.userModel.DISLIKE_THINGS)</th>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.userModel.DISLIKE_THINGS)
+                        </td>
+                    </tr>
+
+                    @* FAVORITE_MOVIE *@
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.userModel.FAVORITE_MOVIE)</th>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.userModel.FAVORITE_MOVIE)
+                        </td>
+                    </tr>
+
+                    @* FAVORITE_FOOD *@
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.userModel.FAVORITE_FOOD)</th>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.userModel.FAVORITE_FOOD)
+                        </td>
+                    </tr>
+                    @* FAVORITE_SEASON *@
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.userModel.FAVORITE_SEASON)</th>
+
+                        <td>
+                            @if (Model.userModel.FAVORITE_SEASON == "0")
+                            {
+                                Model.userModel.FAVORITE_SEASON = "없음";
+                            }
+                            @Html.DisplayFor(modelItem => Model.userModel.FAVORITE_SEASON)
+                        </td>
+                    </tr>
+
+                    @* PET *@
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.userModel.PET)</th>
+
+                        <td>
+                            @if (Model.userModel.PET == "Y")
+                            {
+                                Model.userModel.PET = "있음";
+                            }
+                            else
+                            {
+                                Model.userModel.PET = "없음";
+                            }
+                            @Html.DisplayFor(modelItem => Model.userModel.PET)
+                        </td>
+                    </tr>
+                    @* CREATE_DATE *@
+                    <tr>
+
+                        <th>@Html.DisplayNameFor(model => model.userModel.CREATE_DATE)</th>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.userModel.CREATE_DATE)
+                        </td>
+                    </tr>
+
+                    @* CREATE_UESR *@
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.userModel.CREATE_USER)</th>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.userModel.CREATE_USER)
+                        </td>
+                    </tr>
+
+                    @* UPDATE_DATE *@
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.userModel.UPDATE_DATE)</th>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.userModel.UPDATE_DATE)
+                        </td>
+                    </tr>
+                    @* UPDATE_USER *@
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.userModel.UPDATE_USER)</th>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.userModel.UPDATE_USER)
+                        </td>
+                    </tr>
+
+                    @* 공백 *@
+                    <tr>
+                        <td> <br /> </td>
+                        <td> <br /> </td>
+                    </tr>
+
+                    @* 수정 / 돌아가기 / 삭제 폼 *@
+                    <tr>
+                        <td colspan="3">
+                            @using (Html.BeginForm("Write", "User"))
+                            {
+                                <button type="submit" name="mode" value="UPDATE" class="myBtn2">Edit</button>
+                                <input type="hidden" name="SEARCH_WORD" value="@Model.SEARCH_WORD" />
+                                <input type="hidden" name="SEARCH_TYPE" value="@Model.SEARCH_TYPE" />
+                                <input type="hidden" name="SEARCH_DATE_TO" value="@Model.CREATE_TIME_YMDHM_TO" />
+                                <input type="hidden" name="SEARCH_DATE_FROM" value="@Model.CREATE_TIME_YMDHM_FROM" />
+                                <input type="hidden" name="FAVORITE_SEASON" value="@Model.FAVORITE_SEASON" />
+                                <input type="hidden" name="PET" value="@Model.PET" />
+                                <input type="hidden" name="USER_ID" value="@Model.userModel.USER_ID" />
+                            }
+                            |
+                            @using (Html.BeginForm("List", "User"))
+                            {
+                                <button type="submit" class="myBtn2">Back to List</button>
+                                <input type="hidden" name="SEARCH_WORD" value="@Model.SEARCH_WORD" />
+                                <input type="hidden" name="SEARCH_TYPE" value="@Model.SEARCH_TYPE" />
+                                <input type="hidden" name="SEARCH_DATE_TO" value="@Model.CREATE_TIME_YMDHM_TO" />
+                                <input type="hidden" name="SEARCH_DATE_FROM" value="@Model.CREATE_TIME_YMDHM_FROM" />
+                                <input type="hidden" name="FAVORITE_SEASON" value="@Model.FAVORITE_SEASON" />
+                                <input type="hidden" name="PET" value="@Model.PET" />
+                            }
+                        </td>
+                        <td style="width:85%; text-align:right;">
+                            @using (Html.BeginForm("Delete", "User", FormMethod.Post, new { onsubmit = "return checkform()" }))
+                            {
+                                <button type="submit" class="myBtn" value="@Model.userModel.USER_ID" name="USER_ID">
+                                    <span style="color:lightsalmon; font-weight:bold;">Delete</span>
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                </table>
+
+
+
+
+
+            </div> @* .bs-docs-section. .row .col-lg-12 .bs-component *@
+        </div>@* .bs-docs-section. .row .col-lg-12 *@
+    </div>@* .bs-docs-section. .row *@
+</div>@* .bs-docs-section *@

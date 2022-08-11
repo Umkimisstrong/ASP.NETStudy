@@ -1,0 +1,748 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+}
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@* 스크립트 *@
+<script type="text/javascript">
+
+
+
+    // submit 전 form 을 체크하는 함수
+    function checkform() {
+        //alert("체크");
+        var user_id = document.getElementById("USER_ID");
+        if (user_id.value.trim() == "") {
+            user_id.focus();
+            return false;
+        }
+
+        var user_pwd = document.getElementById("USER_PWD");
+        if (user_pwd.value.trim() == "") {
+            user_pwd.focus();
+            return false;
+        }
+
+        var user_nm = document.getElementById("USER_NM");
+        if (user_nm.value.trim() == "") {
+            user_nm.focus();
+            return false;
+        }
+
+        var user_birth = document.getElementById("USER_BIRTH");
+        if (user_birth.value.trim() == "") {
+            user_birth.focus();
+            return false;
+        }
+        var hobby = document.getElementById("HOBBY");
+        if (hobby.value.trim() == "") {
+            hobby.focus();
+            return false;
+        }
+
+        //var create_user = document.getElementById("CREATE_USER");
+        //if (create_user.value.trim() == "")
+        //{
+        //    create_user.focus();
+        //    return false;
+        //}
+
+        return true;
+    }
+</script>
+
+@* Jquery *@
+<script>
+    $(document).ready(function () {
+
+        var checkId = $("#USER_ID").val().trim();
+        // ID 입력창에서 커서가 벗어나면 - 비었는지 / 길이가 32가 넘었는지 확인 후 err메세지 띄워준다.
+        if (checkId == "") {
+            $("#USER_ID").blur(function () {
+                var USER_ID = $("#USER_ID").val();
+                if (USER_ID.trim() == "") {
+                    $(".errIdMsg").css("display", "inline");
+                    $("#USER_ID").focus();
+                    return;
+                }
+                else {
+                    $(".errIdMsg").css("display", "none");
+                }
+
+                if (USER_ID.length > 32) {
+                    $(".errIdMsg").html("ID는 32글자 이하로 작성해야합니다.");
+                    $(".errIdMsg").css("display", "inline");
+                    $("#USER_ID").focus();
+                    return;
+                }
+
+                // Ajax
+                $.ajax({
+                    type: "POST"
+                    , data:
+                    {
+                        id: USER_ID
+                    }
+                    , url: "CheckUser"
+                    , success: function (data) {
+
+                        if (data == "nolog") {
+                            alert("세션이 만료되었습니다. 다시 로그인 후 이용해주세요.");
+                            location.href = "Login";
+                        }
+
+                        $(".errIdMsg").html(data);
+                        if (data.trim().substring(0, 1) == "사") {
+                            $(".errIdMsg").css("color", "Green");
+                            $(".errIdMsg").css("font-weight", "bold");
+                            $(".errIdMsg").css("display", "inline");
+                        }
+                        else {
+                            $(".errIdMsg").css("color", "red");
+                            $(".errIdMsg").css("font-weight", "bold");
+                            $(".errIdMsg").css("display", "inline");
+                            $("#USER_ID").focus();
+                            return;
+                        }
+
+
+                    }
+                    , error: function (xhr, status, error) {
+                        alert("에러발생");
+                    }
+
+                });
+            });
+        }
+
+        // PWD 입력창에서 커서가 벗어나면 - 비었는지 / 길이가 32가 넘었는지 확인 후 err메세지 띄워준다.
+        $("#USER_PWD").blur(function () {
+            var USER_PWD = $("#USER_PWD").val();
+            if (USER_PWD.trim() == "") {
+                $(".errPwdMsg").css("display", "inline");
+                $("#USER_PWD").focus();
+                return;
+            }
+            else {
+                $(".errPwdMsg").css("display", "none");
+            }
+
+            if (USER_PWD.length > 32) {
+                $(".errPwdMsg").html("ID는 32글자 이하로 작성해야합니다.");
+                $(".errPwdMsg").css("display", "inline");
+                $("#USER_PWD").focus();
+                return;
+            }
+
+        });
+
+        // NM 입력창에서 커서가 벗어나면 - 비었는지 / 길이가 32가 넘었는지  확인 후 err메세지 띄워준다.
+        $("#USER_NM").blur(function () {
+            var USER_NM = $("#USER_NM").val();
+            if (USER_NM.trim() == "") {
+                $(".errNameMsg").css("display", "inline");
+                $("#USER_NM").focus();
+                return;
+            }
+            else {
+                $(".errNameMsg").css("display", "none");
+            }
+
+            if (USER_NM.length > 32) {
+                $(".errNameMsg").html("NAME은 32글자 이하로 작성해야합니다.");
+                $(".errNameMsg").css("display", "inline");
+                $("#USER_NM").focus();
+                return;
+            }
+
+        });
+
+        // BIRTH 입력창에서 커서가 벗어나면 - 비었는지 / 숫자가맞는지 / 8자린지 / 날짜형식에 맞는지 확인 후 err메세지 띄워준다.
+        $("#USER_BIRTH").blur(function () {
+            var USER_BIRTH = $("#USER_BIRTH").val();
+            if (USER_BIRTH.trim() == "") // (공백이라면)
+            {
+                $(".errBirthMsg").css("display", "inline");
+                $("#USER_BIRTH").focus();
+                return;
+            }
+            else {
+                $(".errBirthMsg").css("display", "none");
+            }
+
+            if (USER_BIRTH.length != 8) // (8자리가 아니라면)
+            {
+                $(".errBirthMsg").html("BIRTH 형식은 YYYYMMDD(8자리) 로 작성해야합니다.");
+                $(".errBirthMsg").css("display", "inline");
+                $("#USER_BIRTH").focus();
+                return;
+            }
+
+            if (isNaN(USER_BIRTH)) // (문자라면)
+            {
+                $(".errBirthMsg").html("BIRTH 는 숫자로 작성해야합니다.");
+                $(".errBirthMsg").css("display", "inline");
+                $("#USER_BIRTH").focus();
+                return;
+            }
+
+            //alert(USER_BIRTH.substring(0, 4));
+            var year = USER_BIRTH.substring(0, 4);
+            var month = USER_BIRTH.substring(4, 6);
+            var day = USER_BIRTH.substring(6, 8);
+            //alert(year +"-"+ month +"-"+day);
+            //if (USER_BIRTH.substring(0, 3))
+            // 날짜에 맞지 않는 경우 ->
+            // 1. 입력한 년도가 현재 년도보다 미래인 경우 -> 에러 , 리턴
+            var nowDate = new Date();
+            var nowYear = nowDate.getFullYear();
+            if (nowYear < year) {
+                $(".errBirthMsg").html("출생년도가 현재보다 앞설 수 없습니다.");
+                $(".errBirthMsg").css("display", "inline");
+                $("#USER_BIRTH").focus();
+                return;
+            }
+
+
+            // 2. 그렇지 않은경우
+            //      2-1. 입력한 월이 1~12 사이의 숫자가 아닌경우 -> 에러 , 리턴
+            if (month <= 0 || month > 12) {
+                $(".errBirthMsg").html("입력하신 월의 형식이 올바르지 않습니다. 1월 ~ 12월 사이의 수를 입력해주세요.");
+                $(".errBirthMsg").css("display", "inline");
+                $("#USER_BIRTH").focus();
+                return;
+            }
+
+            // 입력한 일이 31일을 초과하거나 0 이하인 경우
+            if (day > 31 || day <= 0) {
+                $(".errBirthMsg").html("입력하신 입력하신 월에 해당하는 일이 아닙니다. 다시 입력해주세요.");
+                $(".errBirthMsg").css("display", "inline");
+                $("#USER_BIRTH").focus();
+                return;
+            }
+
+            // 2월을 선택한 경우
+            if (month == 2) {
+                // 윤년인경우(4로 나누어 떨어지면서 100으로 나누어 떨어지는 것은 제외, 400으로 나누어 떨어지는 년도) - > 2월은 29일까지
+                if (year % 4 == 00 && year % 100 != 0 || year % 400 == 0) {
+                    if (day > 29) {
+                        $(".errBirthMsg").html("입력하신 월에 해당하는 일을 초과하셨습니다. 다시 입력해주세요.");
+                        $(".errBirthMsg").css("display", "inline");
+                        $("#USER_BIRTH").focus();
+                        return;
+                    }
+                }
+                else {
+                    if (day > 28) {
+                        $(".errBirthMsg").html("입력하신 월에 해당하는 일을 초과하셨습니다. 다시 입력해주세요.");
+                        $(".errBirthMsg").css("display", "inline");
+                        $("#USER_BIRTH").focus();
+                        return;
+                    }
+                }
+            }
+
+            // 2월이 아닌 경우 -> 4월 6월 9월 11월 -> 30
+            if (month == 4 || month == 6 || month == 9 || month == 11) {
+                if (day > 30) {
+                    $(".errBirthMsg").html("입력하신 월에 해당하는 일을 초과하셨습니다. 다시 입력해주세요.");
+                    $(".errBirthMsg").css("display", "inline");
+                    $("#USER_BIRTH").focus();
+                    return;
+                }
+            }
+
+
+        });
+
+        // HOBBY 입력창에서 커서가 벗어나면 - 비었는지 / 길이가 32가 넘었는지 확인 후 err메세지 띄워준다.
+        $("#HOBBY").blur(function () {
+            var HOBBY = $("#HOBBY").val();
+            if (HOBBY.trim() == "") {
+                $(".errHobbyMsg").css("display", "inline");
+                $("#HOBBY").focus();
+                return;
+            }
+            else {
+                $(".errHobbyMsg").css("display", "none");
+            }
+
+            if (HOBBY.length > 32) {
+                $(".errHOBBYMsg").html("HOBBY는 32글자 이하로 작성해야합니다.");
+                $(".errHOBBYsg").css("display", "inline");
+                $("#HOBBY").focus();
+                return;
+            }
+
+        });
+
+        // HOBBY 입력창에서 커서가 벗어나면 - 비었는지  확인 후 err메세지 띄워준다.
+        $("#CREATE_USER").blur(function () {
+            var CREATE_USER = $("#CREATE_USER").val();
+            if (CREATE_USER.trim() == "") {
+                $(".errCuMsg").css("display", "inline");
+                $("#CREATE_USER").focus();
+                return;
+            }
+            else {
+                $(".errCuMsg").css("display", "none");
+            }
+        });
+
+    })
+</script>
+
+@* 스타일 *@
+<style type="text/css">
+    form {
+        display: inline;
+    }
+
+    .myTable th {
+        text-align: right;
+        padding-bottom: 1em;
+    }
+
+    .myTable td {
+        text-align: left;
+        padding-left: 1em;
+        padding-bottom: 1em;
+    }
+
+    .essential {
+        font-size: small;
+        color: red;
+    }
+
+    .errIdMsg {
+        color: red;
+        font-size: small;
+        display: none;
+    }
+
+    .errPwdMsg {
+        color: red;
+        font-size: small;
+        display: none;
+    }
+
+    .errNameMsg {
+        color: red;
+        font-size: small;
+        display: none;
+    }
+
+    .errBirthMsg {
+        color: red;
+        font-size: small;
+        display: none;
+    }
+
+    .errHobbyMsg {
+        color: red;
+        font-size: small;
+        display: none;
+    }
+
+    .errCuMsg {
+        color: red;
+        font-size: small;
+        display: none;
+    }
+
+    .myBtn2 {
+        background: none;
+        border: none;
+        color: #337AB7;
+    }
+</style>
+<h2>WriteUser</h2>
+
+@* 전체 div *@
+<div class="bs-docs-section"> 
+    <div class="row">  
+        <div class="col-lg-12"> @* Grid div - lg - 12 *@
+
+
+            <div class="page-header"> @* header div - 사용하지 않음 *@
+            </div>
+
+
+            <div class="bs-component"> @* content div - 사용자에게 출력되는 Login form *@
+
+                @* 
+                    컨트롤러에서 전달되는 mode 에 따라 다른 폼 출력
+                    flag 가 true : 신규유저 입력 폼
+                    false        : 기존유저 수정 폼
+                *@
+
+                @if (ViewBag.flag == true)
+                {
+                    @* 유저 입력 폼 *@
+                    <form action="/User/Create" method="post" onsubmit="return checkform()" name="CreateForm" id="CreateForm">
+                        <table class="myTable" style="border:none;">
+                            <tr>
+                                <th>
+                                    <span class="essential">*</span> USER_ID
+                                </th>
+                                <td>
+                                    <input class="form-control" id="USER_ID" name="USER_ID" maxlength="32" />
+                                    <span class="errIdMsg">ID 는 필수 입력사항입니다.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <span class="essential">*</span> USER_PWD
+                                </th>
+                                <td>
+                                    <input class="form-control" id="USER_PWD" name="USER_PWD" maxlength="32" />
+                                    <span class="errPwdMsg">PWD 는 필수 입력사항입니다.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <span class="essential">*</span> USER_NM
+                                </th>
+                                <td>
+                                    <input class="form-control" id="USER_NM" name="USER_NM" maxlength="32" />
+                                    <span class="errNameMsg">NAME 은 필수 입력사항입니다.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <span class="essential">*</span> USER_BIRTH
+                                </th>
+                                <td>
+                                    <input class="form-control" id="USER_BIRTH" name="USER_BIRTH" placeholder="YYYYMMDD" maxlength="8" />
+                                    <span class="errBirthMsg">BIRTH 는 필수 입력사항입니다.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <span class="essential">*</span> HOBBY
+                                </th>
+                                <td>
+                                    <input class="form-control" id="HOBBY" name="HOBBY" maxlength="32" />
+                                    <span class="errHobbyMsg">HOBBY 는 필수 입력사항입니다.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    LIKE_THINGS
+                                </th>
+                                <td>
+                                    <input class="form-control" id="LIKE_THINGS" name="LIKE_THINGS" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    DISLIKE_THINGS
+                                </th>
+                                <td>
+                                    <input class="form-control" id="DISLIKE_THINGS" name="DISLIKE_THINGS" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    FAVORITE_MOVIE
+                                </th>
+                                <td>
+                                    <input class="form-control" id="FAVORITE_MOIVE" name="FAVORITE_MOVIE" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    FAVORITE_FOOD
+                                </th>
+                                <td>
+                                    <input class="form-control" id="FAVORITE_FOOD" name="FAVORITE_FOOD" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    FAVORITE_SEASON
+                                </th>
+                                <td>
+                                    <select class="form-control" id="FAVORITE_SEASON" name="FAVORITE_SEASON">
+                                        <option value="0" selected="selected">선택해주세요</option>
+                                        <option value="SPRING">봄</option>
+                                        <option value="SUMMER">여름</option>
+                                        <option value="AUTUMN">가을</option>
+                                        <option value="WINTER">겨울</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    PET
+                                </th>
+                                <td>
+                                    <select class="form-control" id="PET" name="PET">
+                                        <option value="N" selected="selected">선택해주세요</option>
+                                        <option value="Y">있음</option>
+                                        <option value="N">없음</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    CREATE_USER
+                                </th>
+                                <td>
+                                    <input class="form-control" id="CREATE_USER" name="CREATE_USER" readonly="readonly" value="@ViewBag.logUser" />
+                                    <span class="errCuMsg">CREATE USER 은 필수 입력사항입니다.</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                    <span class="essential">*</span> 은 필수 입력사항입니다.
+                                    <br /><br />
+                                    <button type="submit" class="btn btn-default">Create</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                }
+                else
+                {
+                    @* 유저 수정 폼 *@
+                    <form action="/User/Update" method="post" onsubmit="return checkform()" name="UpdateForm" id="UpdateForm">
+                        <table class="myTable" style="border:none;">
+                            @foreach (var item in Model.UserList)
+                            {
+                                <tr>
+                                    <th>
+                                        <span class="essential">*</span> USER_ID
+                                    </th>
+                                    <td>
+                                        <input type="text" class="form-control" id="USER_ID" name="USER_ID" maxlength="32" value="@item.USER_ID" readonly="readonly" />
+                                        <span class="errIdMsg">ID 는 필수 입력사항입니다.</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <span class="essential">*</span> USER_PWD
+                                    </th>
+                                    <td>
+                                        <input type="password" class="form-control" id="USER_PWD" name="USER_PWD" maxlength="32" value="@item.USER_PWD" readonly="readonly" />
+                                        <span class="errPwdMsg">PWD 는 필수 입력사항입니다.</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <span class="essential">*</span> USER_NM
+                                    </th>
+                                    <td>
+                                        <input type="text" class="form-control" id="USER_NM" name="USER_NM" maxlength="32" value="@item.USER_NM" />
+                                        <span class="errNameMsg">NAME 은 필수 입력사항입니다.</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <span class="essential">*</span> USER_BIRTH
+                                    </th>
+                                    <td>
+                                        <input type="text" class="form-control" id="USER_BIRTH" name="USER_BIRTH" placeholder="YYYYMMDD" maxlength="8" value="@item.USER_BIRTH" />
+                                        <span class="errBirthMsg">BIRTH 는 필수 입력사항입니다.</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <span class="essential">*</span> HOBBY
+                                    </th>
+                                    <td>
+                                        <input type="text" class="form-control" id="HOBBY" name="HOBBY" maxlength="32" value="@item.HOBBY" />
+                                        <span class="errHobbyMsg">HOBBY 는 필수 입력사항입니다.</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        LIKE_THINGS
+                                    </th>
+                                    <td>
+                                        <input type="text" class="form-control" id="LIKE_THINGS" name="LIKE_THINGS" value="@item.LIKE_THINGS" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        DISLIKE_THINGS
+                                    </th>
+                                    <td>
+                                        <input type="text" class="form-control" id="DISLIKE_THINGS" name="DISLIKE_THINGS" value="@item.DISLIKE_THINGS" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        FAVORITE_MOVIE
+                                    </th>
+                                    <td>
+                                        <input type="text" class="form-control" id="FAVORITE_MOIVE" name="FAVORITE_MOVIE" value="@item.FAVORITE_MOVIE" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        FAVORITE_FOOD
+                                    </th>
+                                    <td>
+                                        <input type="text" class="form-control" id="FAVORITE_FOOD" name="FAVORITE_FOOD" value="@item.FAVORITE_FOOD" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        FAVORITE_SEASON
+                                    </th>
+                                    <td>
+                                        @* SEASON 분기처리 :  *@
+                                        @if (@item.FAVORITE_SEASON.Equals("SPRING"))
+                                        {
+                                            <select class="form-control" id="FAVORITE_SEASON" name="FAVORITE_SEASON">
+                                                <option value="0">선택해주세요</option>
+                                                <option value="SPRING" selected="selected">봄</option>
+                                                <option value="SUMMER">여름</option>
+                                                <option value="AUTUMN">가을</option>
+                                                <option value="WINTER">겨울</option>
+                                            </select>
+                                        }
+                                        else if (@item.FAVORITE_SEASON.Equals("SUMMER"))
+                                        {
+                                            <select class="form-control" id="FAVORITE_SEASON" name="FAVORITE_SEASON">
+                                                <option value="0">선택해주세요</option>
+                                                <option value="SPRING">봄</option>
+                                                <option value="SUMMER" selected="selected">여름</option>
+                                                <option value="AUTUMN">가을</option>
+                                                <option value="WINTER">겨울</option>
+                                            </select>
+                                        }
+                                        else if (@item.FAVORITE_SEASON.Equals("AUTUMN"))
+                                        {
+                                            <select class="form-control" id="FAVORITE_SEASON" name="FAVORITE_SEASON">
+                                                <option value="0">선택해주세요</option>
+                                                <option value="SPRING">봄</option>
+                                                <option value="SUMMER">여름</option>
+                                                <option value="AUTUMN" selected="selected">가을</option>
+                                                <option value="WINTER">겨울</option>
+                                            </select>
+                                        }
+                                        else if (@item.FAVORITE_SEASON.Equals("WINTER"))
+                                        {
+                                            <select class="form-control" id="FAVORITE_SEASON" name="FAVORITE_SEASON">
+                                                <option value="0">선택해주세요</option>
+                                                <option value="SPRING">봄</option>
+                                                <option value="SUMMER">여름</option>
+                                                <option value="AUTUMN">가을</option>
+                                                <option value="WINTER" selected="selected">겨울</option>
+                                            </select>
+                                        }
+                                        else
+                                        {
+                                            <select class="form-control" id="FAVORITE_SEASON" name="FAVORITE_SEASON">
+                                                <option value="0" selected="selected">선택해주세요</option>
+                                                <option value="SPRING">봄</option>
+                                                <option value="SUMMER">여름</option>
+                                                <option value="AUTUMN">가을</option>
+                                                <option value="WINTER">겨울</option>
+                                            </select>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        PET
+                                    </th>
+                                    <td>
+                                        @* PET 분기처리 :  *@
+                                        @if (@item.PET.Equals("Y"))
+                                        {
+                                            <select class="form-control" id="PET" name="PET">
+                                                <option value="0">선택해주세요</option>
+                                                <option value="Y" selected="selected">있음</option>
+                                                <option value="N">없음</option>
+                                            </select>
+                                        }
+                                        else if (item.PET.Equals("N"))
+                                        {
+                                            <select class="form-control" id="PET" name="PET">
+                                                <option value="0">선택해주세요</option>
+                                                <option value="Y">있음</option>
+                                                <option value="N" selected="selected">없음</option>
+                                            </select>
+                                        }
+                                        else
+                                        {
+                                            <select class="form-control" id="PET" name="PET">
+                                                <option value="0" selected="selected">선택해주세요</option>
+                                                <option value="Y">있음</option>
+                                                <option value="N">없음</option>
+                                            </select>
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        CREATE_DATE
+                                    </th>
+                                    <td>
+                                        <input type="text" class="form-control" id="CREATE_DATE" name="CREATE_DATE" readonly="readonly" value="@item.CREATE_DATE" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        CREATE_USER
+                                    </th>
+                                    <td>
+                                        <input type="text" class="form-control" id="CREATE_USER" name="CREATE_USER" readonly="readonly" value="@item.CREATE_USER" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        UPDATE_DATE
+                                    </th>
+                                    <td>
+                                        <input type="text" class="form-control" id="UPDATE_DATE" name="UPDATE_DATE" readonly="readonly" value="@item.UPDATE_DATE" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        UPDATE_USER
+                                    </th>
+                                    <td>
+                                        <input type="text" class="form-control" id="UPDATE_USER" name="UPDATE_USER" readonly="readonly" value="@item.UPDATE_USER" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        <span class="essential">*</span> 은 필수 입력사항입니다.
+                                        <br /><br />
+                                        <button type="submit" class="btn btn-default">Update</button>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </form>
+                }
+
+                @* 하단 부 검색조건 유지를 위한 폼 *@
+                @using (Html.BeginForm("List", "User"))
+                {
+                    <button type="submit" class="myBtn2">Back to List</button>
+                    <input type="hidden" name="SEARCH_TYPE" value="@Model.SEARCH_TYPE" />
+                    <input type="hidden" name="SEARCH_WORD" value="@Model.SEARCH_WORD" />
+                    <input type="hidden" name="SEARCH_DATE_TO" value="@Model.CREATE_TIME_YMDHM_TO" />
+                    <input type="hidden" name="SEARCH_DATE_FROM" value="@Model.CREATE_TIME_YMDHM_FROM" />
+                    <input type="hidden" name="FAVORITE_SEASON" value="@Model.FAVORITE_SEASON" />
+                    <input type="hidden" name="PET" value="@Model.PET" />
+                }
+            
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+

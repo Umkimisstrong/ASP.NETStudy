@@ -1,0 +1,175 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@* 컨트롤러에서 아이디가 틀린 경우 flag 를 0 으로 리턴받아 알림 /  *@
+@if (ViewBag.flag == 0)
+{
+    <script type="text/javascript">
+        alert("아이디가 틀렸습니다.");
+    </script>
+}@* 컨트롤러에서 비밀번호가 틀린 경우 flag 를 1 으로 리턴받아 알림 /  *@
+else if (ViewBag.flag == 1)
+{
+    <script type="text/javascript">
+        alert("비밀번호가 틀렸습니다.");
+    </script>
+}
+
+@* 컨트롤러에서 세션이 만료되었으면 log 를 "nolog" 로 리턴받아 알림 /  *@
+@if (ViewBag.log == "nolog")
+{
+    <script type="text/javascript">
+        alert("로그인 후 이용해주세요");
+    </script>
+}
+
+@* Jquery CDN *@
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+@* 스크립트 : Login 전 검사 *@
+<script type="text/javascript">
+
+    // submit 전 form 을 체크하는 함수
+    // id, pwd 가 비어있으면 return false
+    function checkform() {
+
+
+        var user_id = document.getElementById("id");
+
+        if (user_id.value.trim() == "") {
+            user_id.focus();
+            return false;
+        }
+
+        var user_pwd = document.getElementById("pwd");
+        if (user_pwd.value.trim() == "") {
+            user_pwd.focus();
+            return false;
+        }
+
+
+        return true;
+    }
+</script>
+
+@* 스크립트 : Login 중 검사 *@
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // ID 입력창에서 커서가 벗어나면 - 비었는지 확인 후 err메세지 띄워준다.
+        $("#id").blur(function () {
+            var USER_ID = $("#id").val();
+            if (USER_ID.trim() == "") {
+                $(".errIdMsg").css("display", "inline");
+                $("#id").focus();
+                return;
+            }
+            else
+                $(".errIdMsg").css("display", "none");
+        });
+
+        // PWD 입력창에서 커서가 벗어나면 - 비었는지 확인 후 err메세지 띄워준다.
+        $("#pwd").blur(function () {
+            var USER_PWD = $("#pwd").val();
+            if (USER_PWD.trim() == "") {
+                $(".errPwdMsg").css("display", "inline");
+                $("#pwd").focus();
+                return;
+            }
+            else
+                $(".errPwdMsg").css("display", "none");
+
+        });
+    })
+</script>
+
+@* 스타일 *@
+<style type="text/css">
+    .myTable th {
+        text-align: right;
+        padding-bottom: 1em;
+    }
+
+    .myTable td {
+        text-align: left;
+        padding-left: 1em;
+        padding-bottom: 1em;
+    }
+
+    .essential {
+        font-size: small;
+        color: red;
+    }
+
+    .errIdMsg {
+        color: red;
+        font-size: small;
+        display: none;
+    }
+
+    .errPwdMsg {
+        color: red;
+        font-size: small;
+        display: none;
+    }
+
+    .myBtn {
+        background: none;
+        border: none;
+    }
+</style>
+
+@* 제목 *@
+<h2>LoginUser</h2>
+
+@* 전체 div *@
+<div class="bs-docs-section">
+    <div class="row">
+
+        <div class="col-lg-12">  @* Grid div - lg - 12 *@
+
+            <div class="page-header">  @* header div - 사용하지 않음 *@
+            </div>                          
+
+
+            <div class="bs-component">    @* content div - 사용자에게 출력되는 Login form *@
+
+                @*
+                    form : 로그인 유효성을 검사 수행 : onsubmit 시 checkform() 함수에서 true / false 를 리턴받아 수행
+                *@
+                <form action="/User/LoginValidate" method="post" onsubmit="return checkform()" name="CreateForm" id="CreateForm">
+                    <table class="myTable" style="border:none;">
+                        <tr>
+                            <th>
+                                USER_ID
+                            </th>
+                            <td>
+                                <input class="form-control" id="id" name="id" maxlength="32" /> 
+                                <span class="errIdMsg">ID 는 필수 입력사항입니다.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                USER_PWD
+                            </th>
+                            <td>
+                                <input class="form-control" id="pwd" name="pwd" maxlength="32" />
+                                <span class="errPwdMsg">PWD 는 필수 입력사항입니다.</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-default">Login</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

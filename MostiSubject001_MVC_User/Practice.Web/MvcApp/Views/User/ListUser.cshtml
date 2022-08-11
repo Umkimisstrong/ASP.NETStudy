@@ -1,0 +1,604 @@
+﻿@model MvcApp.Models.Response.UserResponse
+    @*@model MvcApp.Models.Entity.UserModel*@
+
+    @{
+        ViewBag.Title = "ListUser";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    @* Jquery CDN *@
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    @* Jquery CDN *@
+
+    @* Javascript / Jquery 실행 구문 *@
+    <script type="text/javascript">
+
+        // 삭제를 Javascript + Ajax 로 변경한 이유
+        // Jquery 이벤트가 날라간다.
+        // Jquery 이벤트를 초기화 하지 않으면서
+        // 페이지가 부분적으로 바뀌어도
+        // 계속 버튼이 살아있으려면
+        // onclick 이벤트를 걸어주는 것이 효과적이다.
+
+        function deleteAjax(id)
+        {
+            var delCheck = confirm("정말 삭제하시겠습니까?");
+
+            // 취소 시
+            if (!delCheck) {
+                alert("삭제가 취소되었습니다.");
+                return;
+            }
+
+            // 확인 시 현재 버튼의 값(USER_SEQ)를 변수에 담고
+            //var USER_ID = $(this).val();
+            
+            var USER_ID = id;
+
+            //alert(USER_ID);
+            //return;
+            // 요청할 url 을 세팅(Controller ActionName 으로 설정)
+            var url = "Delete";
+
+            // Ajax 요청시작
+            $.ajax({
+                type: "POST" // 삭제 URL 에 USER_SEQ 를 태워보내면 보안상 문제가 될수도있음
+                , url: url   // URL 세팅
+                , data:
+                {
+                    // 넘겨줄 데이터 : USER_SEQ
+                    USER_ID: USER_ID
+                }
+                , success: function (data) {
+                    // 성공 시 : 중요
+
+                    // 알림
+                    alert("삭제가 완료되었습니다.");
+                    //document.location.href = document.location.href;          // 새로고침(의미없음)
+                    //alert(data);                                              // <!DOCTYPE HTML>부터 전체 HTML 요소
+                    //alert(data.document);                                     // -undefined
+                    //alert($(data).find("div#ListComponent"));                 // object object   (해당 DIV)
+                    //alert($(data).find("div#ListComponent").html());          // ListUser.cshtml 의 전체 요소 반환
+
+                    // 1. 전체 요소를 바꿔준다.
+                    var ListComponent = $(data).find("div#ListComponent").html();
+                    $("#ListComponent").html(ListComponent);
+
+                    // 2. 여기서 다시 <div id=bs-component> 만 찾을 수도 있다.
+
+                    // 가져온 data 의 div 중 bs-component 클래스의 html 내용을 찾는다.
+                    //var bs_component = $(data).find("div.bs-component").html();
+
+                    // 재 바인딩이 요구되는 영역에 해당 html 을 넣어준다.
+                    //$(".bs-component").html(bs_component);
+                }
+                , error: function (xhr, status, error) {
+                    alert("에러발생");
+                }
+            });
+        }
+
+
+        // document 준비 완료 시 실행구문
+        $(document).ready(function () {
+
+            $("#SEARCH_DATE_FROM").datepicker({
+                dateFormat: "yy-mm-dd"
+
+
+            });
+
+            $("#SEARCH_DATE_TO").datepicker({
+                dateFormat: "yy-mm-dd"
+            });
+
+
+            // 삭제버튼이 on  Click 이벤트 발생 시 Ajax 를 요청하여 삭제 후 리스트 재바인딩
+            // 1. Ajax 로 USER_SEQ 를 넘겨주는 URL 요청
+            // 2. 성공 시 삭제가 완료되었음을 알려주는 alert() 통보
+            // 3. 리스트 재바인딩
+            //$(".deleteBtn").on("click", function () {
+                // Ajax 처리내용
+                /*
+                // 테스트
+                //alert("삭제합니다."); -- OK
+                //alert($(this).val()); -- OK
+                // 너무 중요한 Ajax
+                // 삭제요청을 처리하고나면 Controller RedirectToAction 을 통해 ListUser 를 자연스럽게 다시 세팅할 줄
+                // 알았으나, 삭제가되도 가만히 변화가 없었음
+                // 이유는 명확히 모르겠으나, Ajax 로 요청한 최종 Url에서 가져온 data 를
+                // 『 success 』 속성의 function 으로 가져와서 아무런 처리를 하지 않았기 때문이라고 추정
+
+                // 따라서 Ajax 요청을 하고 나면 data 를 열어서 alert() 로 분해해보자
+                // <!DOCTYPE HTML> 부터 렌더링 된 모든 HTML 요소들이 추출된다.
+
+                // 해당 HTML 요소 중 ListUser 에 해당하는 <div id=ListComponent> 를 찾고
+
+                // 해당 HTML 요소를 현재 <div id=ListComponent>에 적용시켜주면된다.
+                */
+
+                // 삭제하기위한 confirm 확인
+                
+
+            //});
+
+            function leftPad(value)
+            {
+                if (value >= 10)
+                    return value;
+
+                return "0" + value;
+            }
+
+
+            function toStringByFormatting(source, delimiter = "-")
+            {
+                var year = source.getFullYear();
+                var month = leftPad(source.getMonth() + 1);
+                var day = leftPad(source.getDate());
+
+                return [year, month, day].join(delimiter);
+            }
+
+            // 검색 버튼 클릭 시 : SEARCH_TYPE / SEARCH_WORD / FAVORITE_SEASON / PET / CREATE_TIME_FROM / CREATE_TIME_TO 를 받아서 SEARCH 액션으로 POST 로 넘김 Ajax 요청하고
+            // 받아오면 bs-component 에 뿌려준다.
+
+
+            $("#searchBtn").on("click", function () {
+
+                var search_type = $("#SEARCH_TYPE").val();
+                var search_word = $("#SEARCH_WORD").val();
+                var favorite_season = $("#FAVORITE_SEASON").val();
+                var pet = $("#PET").val();
+                var search_date_from = $("#SEARCH_DATE_FROM").val();
+                var search_date_to = $("#SEARCH_DATE_TO").val();
+
+                // 검색 종료날짜를 하루 더해서 값을 전달하기 위한 작업
+                if (search_date_to.trim() != "") // 값을 받아왓다면
+                {
+                    var nowDate = new Date(search_date_to);
+                    nowDate.setDate(nowDate.getDate() + 1);
+
+                    // 사용자 정의 함수 function toStringByFormatting(날짜) {}
+                    // 날짜 객체를 전달받으면 year month day 를뽑아서 yyyy-mm-dd 로 출력해주는 함수
+                    // search_date_to 새로 초기화 해서 값 전달'
+                    search_date_to = toStringByFormatting(nowDate);
+                }
+                
+                
+                $.ajax({
+                    type: "POST"
+                    , url: "SEARCH"
+                    , data:
+                    {
+                        SEARCH_TYPE: search_type                
+                        , SEARCH_WORD: search_word              
+                        , FAVORITE_SEASON: favorite_season      
+                        , PET: pet                              
+                        , SEARCH_DATE_FROM: search_date_from    
+                        , SEARCH_DATE_TO: search_date_to        
+                    }
+                    , success: function (data) {
+
+                        if (data == "nolog")
+                        {
+                            alert("세션이 만료되었습니다. 다시 로그인 후 이용해주십시오.");
+                            location.href = "Login";
+                        }
+
+                        
+
+
+                        var ListComponent = $(data).find("div#ListComponent").html();
+                        $("#ListComponent").html(ListComponent);
+                        //var component = $(data).find("div.bs-component").html();
+                        //$("div.bs-component").html(component);
+                        //alert(data);
+                        //alert($(data).find("div#list_component2").html());
+                        $("#list_component2").html($(data).find("div#list_component2").html());
+                        
+
+                    }
+                    , error: function (xhr, status, error) {
+                        alert("에러발생");
+                    }
+
+                });
+
+
+            });
+        })
+
+    </script>
+    @* Jquery 실행 구문 *@
+
+
+    @* 스타일 *@
+    <style type="text/css">
+        .searchTable {
+            width: 100%;
+        }
+
+            .searchTable td {
+                padding-left: 1px;
+            }
+
+        .myBtn {
+            background: none;
+            border: none;
+            padding: 0;
+            color: indianred;
+        }
+
+            .myBtn:hover {
+                text-decoration: underline;
+            }
+
+        .myBtn2 {
+            background: none;
+            border: none;
+            padding: 0;
+            color: cornflowerblue;
+        }
+
+            .myBtn2:hover {
+                text-decoration: underline;
+            }
+
+        td {
+            text-align: left;
+        }
+
+        #readBtn {
+            color: cadetblue;
+        }
+
+            #readBtn:hover {
+                color: cornflowerblue;
+                font-weight: bold;
+            }
+
+            #readBtn:active {
+                color: blueviolet;
+                font-weight: bold;
+            }
+
+        form {
+            display: inline;
+        }
+    </style>
+    @* 스타일 *@
+
+    @* 제목 *@
+<div id="list_component2">
+    <h2>ListUser</h2>
+
+    <p>
+        @* 신규유저생성 폼 *@
+        @using (Html.BeginForm("Write", "User", FormMethod.Post))
+        {
+            <button type="submit" name="mode" value="CREATE" class="myBtn2">Create New</button>
+            <input type="hidden" name="SEARCH_TYPE" value="@Model.SEARCH_TYPE" />
+            <input type="hidden" name="SEARCH_WORD" value="@Model.SEARCH_WORD" />
+            <input type="hidden" name="FAVORITE_SEASON" value="@Model.FAVORITE_SEASON" />
+            <input type="hidden" name="PET" value="@Model.PET" />
+            <input type="hidden" name="SEARCH_DATE_TO" value="@Model.CREATE_TIME_YMDHM_TO" />
+            <input type="hidden" name="SEARCH_DATE_FROM" value="@Model.CREATE_TIME_YMDHM_FROM" />
+        }
+    </p>
+</div>
+    @* 전체 레이아웃 *@
+    <div class="bs-docs-section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="page-header">
+                    <h1 id="tblUser">Users</h1>
+
+                    @* 검색폼 : 우측정렬 *@
+                    @* 검색 데이터 : SEARCH_TYPE / FAVORITE_SEASON / PET / CREATE_TYME_YMDHM_FROM / CREATE_TIME_YMDHM_TO / SEARCH_WORD *@
+                    @*              ID/NAME/BIRTH    SP/SM/AT/WT     Y/N        YYYY-MM-DD               YYYY-MM-DD           TEXT     *@
+                    <div style="text-align: right; width: 1100px;">
+                        <div style="display:inline-block; width:98%; text-align:right; ">
+                            <table class="searchTable">
+                                <tr>
+                                    @* 검색하고 수정하고 다시 돌아오면 검색값이 남아있어야한다. *@
+                                    <td>
+                                        @if (Model.SEARCH_TYPE == null)
+                                        {
+                                            <select class="form-control" id="SEARCH_TYPE" name="SEARCH_TYPE">
+                                                <option value="" selected="selected">-- 전체 --</option>
+                                                <option value="USER_ID">아이디</option>
+                                                <option value="USER_NM">이름</option>
+                                                <option value="USER_BIRTH">생일</option>
+                                            </select>
+                                        }
+                                        else if (Model.SEARCH_TYPE == "USER_ID")
+                                        {
+                                            <select class="form-control" id="SEARCH_TYPE" name="SEARCH_TYPE">
+                                                <option value="">-- 전체 --</option>
+                                                <option value="USER_ID" selected="selected">아이디</option>
+                                                <option value="USER_NM">이름</option>
+                                                <option value="USER_BIRTH">생일</option>
+                                            </select>
+                                        }
+                                        else if (Model.SEARCH_TYPE == "USER_NM")
+                                        {
+                                            <select class="form-control" id="SEARCH_TYPE" name="SEARCH_TYPE">
+                                                <option value="">-- 전체 --</option>
+                                                <option value="USER_ID">아이디</option>
+                                                <option value="USER_NM" selected="selected">이름</option>
+                                                <option value="USER_BIRTH">생일</option>
+                                            </select>
+                                        }
+                                        else if (Model.SEARCH_TYPE == "USER_BIRTH")
+                                        {
+                                            <select class="form-control" id="SEARCH_TYPE" name="SEARCH_TYPE">
+                                                <option value="">-- 전체 --</option>
+                                                <option value="USER_ID">아이디</option>
+                                                <option value="USER_NM">이름</option>
+                                                <option value="USER_BIRTH" selected="selected">생일</option>
+                                            </select>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (Model.FAVORITE_SEASON == "SPRING")
+                                        {
+                                            <select class="form-control" id="FAVORITE_SEASON" name="FAVORITE_SEASON">
+                                                <option value="">-- 계절 --</option>
+                                                <option value="SPRING" selected="selected">봄</option>
+                                                <option value="SUMMER">여름</option>
+                                                <option value="AUTUMN">가을</option>
+                                                <option value="WINTER">겨울</option>
+                                            </select>
+                                        }
+                                        else if (Model.FAVORITE_SEASON == "SUMMBER")
+                                        {
+                                            <select class="form-control" id="FAVORITE_SEASON" name="FAVORITE_SEASON">
+                                                <option value="">-- 계절 --</option>
+                                                <option value="SPRING">봄</option>
+                                                <option value="SUMMER" selected="selected">여름</option>
+                                                <option value="AUTUMN">가을</option>
+                                                <option value="WINTER">겨울</option>
+                                            </select>
+                                        }
+                                        else if (Model.FAVORITE_SEASON == "AUTUMN")
+                                        {
+                                            <select class="form-control" id="FAVORITE_SEASON" name="FAVORITE_SEASON">
+                                                <option value="">-- 계절 --</option>
+                                                <option value="SPRING">봄</option>
+                                                <option value="SUMMER">여름</option>
+                                                <option value="AUTUMN" selected="selected">가을</option>
+                                                <option value="WINTER">겨울</option>
+                                            </select>
+                                        }
+                                        else if (Model.FAVORITE_SEASON == "WINTER")
+                                        {
+                                            <select class="form-control" id="FAVORITE_SEASON" name="FAVORITE_SEASON">
+                                                <option value="">-- 계절 --</option>
+                                                <option value="SPRING">봄</option>
+                                                <option value="SUMMER">여름</option>
+                                                <option value="AUTUMN">가을</option>
+                                                <option value="WINTER" selected="selected">겨울</option>
+                                            </select>
+                                        }
+                                        else
+                                        {
+                                            <select class="form-control" id="FAVORITE_SEASON" name="FAVORITE_SEASON">
+                                                <option value="" selected="selected">-- 계절 --</option>
+                                                <option value="SPRING"> 봄 </option>
+                                                <option value="SUMMER">여름</option>
+                                                <option value="AUTUMN"> 가을 </option>
+                                                <option value="WINTER">겨울</option>
+                                            </select>
+                                        }
+
+                                    </td>
+                                    <td>
+                                        @if (Model.PET == null)
+                                        {
+                                            <select class="form-control" id="PET" name="PET">
+                                                <option value="" selected="selected">-- 애완동물 --</option>
+                                                <option value="Y">있음</option>
+                                                <option value="N">없음</option>
+                                            </select>
+                                        }
+                                        else if (Model.PET == "Y")
+                                        {
+                                            <select class="form-control" id="PET" name="PET">
+                                                <option value="">-- 애완동물 --</option>
+                                                <option value="Y" selected="selected">있음</option>
+                                                <option value="N">없음</option>
+                                            </select>
+                                        }
+                                        else if (Model.PET == "N")
+                                        {
+                                            <select class="form-control" id="PET" name="PET">
+                                                <option value="">-- 애완동물 --</option>
+                                                <option value="Y">있음</option>
+                                                <option value="N" selected="selected">없음</option>
+                                            </select>
+                                        }
+                                    </td>
+                                    <td style="width:100px;">
+                                        @if (Model.CREATE_TIME_YMDHM_FROM == null)
+                                        {
+                                            <input type="text" class="form-control" id="SEARCH_DATE_FROM" value="" placeholder="검색시작일" style="width:100%; color:black;" name="SEARCH_DATE_FROM" autocomplete="off">
+                                        }
+                                        else
+                                        {
+                                            <input type="text" class="form-control" id="SEARCH_DATE_FROM" value="@Model.CREATE_TIME_YMDHM_FROM" style="width:100%; color:black;" name="SEARCH_DATE_FROM" autocomplete="off">
+                                        }
+                                    </td>
+                                    <td style="width:100px;">
+                                        @if (Model.CREATE_TIME_YMDHM_TO == null)
+                                        {
+                                            <input type="text" class="form-control" id="SEARCH_DATE_TO" value="" placeholder="검색종료일" style="width:100%; color: black;" name="SEARCH_DATE_TO" autocomplete="off">
+                                        }
+                                        else
+                                        {
+                                            <input type="text" class="form-control" id="SEARCH_DATE_TO" value="@Model.CREATE_TIME_YMDHM_TO" placeholder="검색종료일" style="width:100%; color: black;" name="SEARCH_DATE_TO" autocomplete="off">
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (Model.SEARCH_WORD == null)
+                                        {
+                                            <input type="text" class="form-control" id="SEARCH_WORD" value="" placeholder=" 검색어 입력.." name="SEARCH_WORD" style="width:100%; padding:0;" />
+                                        }
+                                        else
+                                        {
+                                            <input type="text" class="form-control" id="SEARCH_WORD" value="@Model.SEARCH_WORD" placeholder=" 검색어 입력.." name="SEARCH_WORD" style="width:100%; padding:0;" />
+                                        }
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" id="searchBtn">검색</button>
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("초기화", "List", "User")
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+             @* 내용이 출력되는 div *@
+            <div id="ListComponent">
+                    @* 유저 리스트 *@
+                    <div class="bs-component">
+                        <table class="table table-hover">
+                            @* 상단 타이틀 *@
+                            <thead>
+                                <tr>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.UserList.FirstOrDefault().USER_ID)</th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.UserList.FirstOrDefault().USER_NM)</th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.UserList.FirstOrDefault().USER_BIRTH)</th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.UserList.FirstOrDefault().PET)</th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.UserList.FirstOrDefault().CREATE_DATE)</th>
+                                    <th scope="col">@Html.DisplayNameFor(model => model.UserList.FirstOrDefault().UPDATE_DATE)</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+
+
+                            <tbody>
+                                <!--TODO : [완료] 아래에 TR를 그리고, 아래의 조건을 충족하세요.-->
+                                <!-- TODO : 모델의 SEQ Key값을 이용하여, TR 클릭 하여 상세 이동 -->
+                                <!-- TODO : 날짜 데이터는 연도-월-일 시:분 형태로 바인딩 -->
+                                @*  *@
+                                @if (Model.UserList != null)
+                                {
+                                    @* 유저가 존재하는 경우 *@
+                                    foreach (var item in Model.UserList)
+                                    {
+
+                                        <tr class="table-striped">
+                                            <td scope="row">
+                                                @Html.DisplayFor(modelItem => item.USER_ID)
+                                            </td>
+                                            <td scope="row">
+                                                @*
+                        유저 한명의 상세정보를 확인하는 폼 - 이름에 submit
+                                                *@
+                                                @using (Html.BeginForm("Details", "User", FormMethod.Post))
+                                                {
+                                                    <button type="submit" name="id" value="@item.USER_ID" class="myBtn2">@item.USER_NM</button>
+                                                    <input type="hidden" name="SEARCH_TYPE" value="@Model.SEARCH_TYPE" />
+                                                    <input type="hidden" name="SEARCH_WORD" value="@Model.SEARCH_WORD" />
+                                                    <input type="hidden" name="FAVORITE_SEASON" value="@Model.FAVORITE_SEASON" />
+                                                    <input type="hidden" name="PET" value="@Model.PET" />
+                                                    <input type="hidden" name="SEARCH_DATE_TO" value="@Model.CREATE_TIME_YMDHM_TO" />
+                                                    <input type="hidden" name="SEARCH_DATE_FROM" value="@Model.CREATE_TIME_YMDHM_FROM" />
+                                                }
+                                            </td>
+                                            <td scope="row">
+                                                @*
+                        날짜를 yyyy-mm-dd로 표현하기 위한 방법
+                                                *@
+                                                @Html.DisplayFor(modelItem => item.USER_BIRTH).ToString().Substring(0, 4)
+                                                -
+                                                @Html.DisplayFor(modelItem => item.USER_BIRTH).ToString().Substring(4, 2)
+                                                -
+                                                @Html.DisplayFor(modelItem => item.USER_BIRTH).ToString().Substring(6, 2)
+                                            </td>
+                                            <td scope="row">
+                                                @*
+                        PET 분기
+                                                *@
+                                                @if (item.PET == "Y")
+                                                {
+                                                    item.PET = "있음";
+                                                }
+                                                else if (item.PET == "N")
+                                                {
+                                                    item.PET = "없음";
+                                                }
+                                                @Html.DisplayFor(modelItem => item.PET)
+                                            </td>
+                                            <td scope="row">
+                                                @Html.DisplayFor(modelItem => item.CREATE_DATE).ToString().AsDateTime().ToString("yyyy.MM.dd HH:mm")
+                                            </td>
+                                            <td scope="row">
+                                                @Html.DisplayFor(modelItem => item.UPDATE_DATE).ToString().AsDateTime().ToString("yyyy.MM.dd HH:mm")
+                                            </td>
+                                            <td scope="row" style="vertical-align:top;">
+                                                @* 수정 폼 *@
+                                                @using (Html.BeginForm("Write", "User"))
+                                                {
+                                                    <button type="submit" name="mode" value="UPDATE" class="myBtn2">Edit</button>
+                                                    <input type="hidden" name="SEARCH_WORD" value="@Model.SEARCH_WORD" />
+                                                    <input type="hidden" name="SEARCH_TYPE" value="@Model.SEARCH_TYPE" />
+                                                    <input type="hidden" name="SEARCH_DATE_TO" value="@Model.CREATE_TIME_YMDHM_TO" />
+                                                    <input type="hidden" name="SEARCH_DATE_FROM" value="@Model.CREATE_TIME_YMDHM_FROM" />
+                                                    <input type="hidden" name="FAVORITE_SEASON" value="@Model.FAVORITE_SEASON" />
+                                                    <input type="hidden" name="PET" value="@Model.PET" />
+                                                    <input type="hidden" name="USER_ID" value="@item.USER_ID" />
+                                                }
+                                                @* 삭제버튼 *@
+                                                <button type="button" class="myBtn deleteBtn" value="@item.USER_ID"
+                                                        style="width:50px; font-size:10.5pt; text-align:center; "
+                                                        id="deleteBtn" onclick="deleteAjax('@item.USER_ID')">
+                                                    삭제
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    @* 유저가 존재하지 않거나, 검색된 유저가 없는 경우 *@
+                                    <tr>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                            <br />
+                                            등록된 유저가 없습니다.
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @* 
+                       페이징(구현못함)
+                    *@
+                    <div id='Paging' style="text-align:center">
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
